@@ -48,6 +48,7 @@
     "meanio-circles": "git://github.com/linnovate/meanio-circles.git",
     "meanio-system": "git://github.com/linnovate/meanio-system.git",
     "meanio-users": "git://github.com/linnovate/meanio-users.git",
+    "moment": "^2.13.0",
     "morgan": "latest",
     "npm": "^3.x",
     "q": "latest",
