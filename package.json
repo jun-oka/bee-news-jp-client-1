@@ -11,7 +11,8 @@
     "url": "https://github.com/linnovate/mean.git"
   },
   "engines": {
-    "node": "5.10.1"
+    "node": "5.10.1",
+    "npm": "3.8.3"
   },
   "license": "MIT",
   "scripts": {
