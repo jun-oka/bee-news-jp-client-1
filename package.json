@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/linnovate/mean.git"
   },
+  "engines": {
+    "node": "5.10.1"
+  },
   "license": "MIT",
   "scripts": {
     "start": "node server",
