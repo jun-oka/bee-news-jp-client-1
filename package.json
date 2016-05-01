@@ -31,6 +31,7 @@
     "angular-ui-select": "^0.12.100",
     "body-parser": "latest",
     "bootstrap": "latest",
+    "bower": "latest",
     "compression": "latest",
     "connect-flash": "latest",
     "connect-modrewrite": "latest",
