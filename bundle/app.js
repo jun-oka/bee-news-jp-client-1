@@ -60273,6 +60273,7 @@
 	
 	  $rootScope.$on('get-blog', function (event, obj) {
 	    $scope.blogs = obj;
+	    console.log(obj);
 	  });
 	
 	  RssClient.getBlog();
@@ -60402,7 +60403,7 @@
 	  return {
 	    getBlog: function getBlog() {
 	      $http.jsonp("http://api.bee-news.net/blog.php?callback=JSON_CALLBACK").then(function (json) {
-	        $rootScope.$emit('get-blog', json);
+	        $rootScope.$emit('get-blog', json.data);
 	      });
 	    }
 	  };

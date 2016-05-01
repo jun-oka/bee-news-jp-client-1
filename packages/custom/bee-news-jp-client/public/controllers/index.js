@@ -8,6 +8,7 @@ angular.module('mean.system')
 
       $rootScope.$on('get-blog', function(event, obj){
         $scope.blogs = obj;
+        console.log(obj);
       });
 
       RssClient.getBlog();

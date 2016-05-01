@@ -1,4 +1,6 @@
 <section class="welcome container-fluid" data-ng-controller="IndexController">
   {{ message }}
-  {{ blogs }} 
+  <div ng-repeat="blog in blogs" >
+    <a href="{{ blog.site_url}}" target="_blank">{{blog.name}}</a>
+  </div>
 </section>
