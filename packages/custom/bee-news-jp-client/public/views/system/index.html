@@ -1,4 +1,5 @@
 <div ng-controller="IndexController">
+  <p>ニホンミツバチの最新情報は、ニホンミツバチについてのブログ、掲示板などの最新投稿を自動的に収集するサイトです。日々の情報収集にお役立てください。</p>
   <h2>ブログ</h2>
   <section class="welcome container-fluid">
     <div ng-repeat="blog in blogs" >
@@ -7,7 +8,7 @@
         3日以内の投稿はありません。
       </div>
       <ul ng-repeat="item in blog.items" >
-        <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" >{{ item.title }}</a></li>
+        <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
       </ul >
     </div>
   </section>
@@ -20,7 +21,7 @@
       3日以内の投稿はありません。
     </div>
     <ul ng-repeat="item in qa.items" >
-      <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" >{{ item.title }}</a></li>
+      <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
     </ul >
   </section>
 
@@ -32,7 +33,7 @@
         3日以内の投稿はありません。
       </div>
       <ul ng-repeat="item in bbs.items" >
-        <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" >{{ item.title }}</a></li>
+        <li>[{{ moment(item.time * 1000).fromNow() }}]{{ item.title }}</li>
       </ul >
     </div>
   </section>
@@ -44,7 +45,7 @@
       3日以内の投稿はありません。
     </div>
     <ul ng-repeat="item in map.items" >
-      <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" >{{ item.title }}</a></li>
+      <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
     </ul >
   </section>
 
