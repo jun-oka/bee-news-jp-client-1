@@ -5,7 +5,7 @@
     <div ng-repeat="blog in blogs" >
       <h3><a href="{{ blog.site_url}}" target="_blank">{{blog.name}}</a></h3>
       <div ng-if="blog.items.length === 0">
-        3日以内の投稿はありません。
+        <ul><li>3日以内の投稿はありません。</li></ul>
       </div>
       <ul ng-repeat="item in blog.items" >
         <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
@@ -18,7 +18,7 @@
   <section class="welcome container-fluid">
     <h3><a href="{{ qa.site_url}}" target="_blank">{{qa.name}}</a></h3>
     <div ng-if="qa.items.length === 0">
-      3日以内の投稿はありません。
+      <ul><li>3日以内の投稿はありません。</li></ul>
     </div>
     <ul ng-repeat="item in qa.items" >
       <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
@@ -30,7 +30,7 @@
     <div ng-repeat="bbs in bbss" >
       <h3><a href="{{ bbs.site_url}}" target="_blank">{{bbs.name}}</a></h3>
       <div ng-if="bbs.items.length === 0">
-        3日以内の投稿はありません。
+        <ul><li>3日以内の投稿はありません。</li></ul>
       </div>
       <ul ng-repeat="item in bbs.items" >
         <li>[{{ moment(item.time * 1000).fromNow() }}]{{ item.title }}</li>
@@ -42,7 +42,7 @@
   <section class="welcome container-fluid">
     <h3><a href="{{ map.site_url}}" target="_blank">{{map.name}}</a></h3>
     <div ng-if="map.items.length === 0">
-      3日以内の投稿はありません。
+      <ul><li>3日以内の投稿はありません。</li></ul>
     </div>
     <ul ng-repeat="item in map.items" >
       <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
