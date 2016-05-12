@@ -16,6 +16,7 @@ MeanStarter.register(function(app, users, system) {
   // Set views path, template engine and default layout
   app.set('views', __dirname + '/server/views');
 
+  MeanStarter.routes(app, users, system);
   MeanStarter.angularDependencies(['mean.system', 'mean.users']);
 
   return MeanStarter;
