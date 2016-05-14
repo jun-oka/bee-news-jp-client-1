@@ -23,6 +23,11 @@ angular.module('mean.system')
             $http.jsonp("http://api.bee-news.net/bbs.php?callback=JSON_CALLBACK&day=3").then(function(json) {
               $rootScope.$emit('get-bbs', json.data);
             });
+          },
+          getYouTube: function(){
+            $http.jsonp("http://api.bee-news.net/youtube.php?callback=JSON_CALLBACK&day=3").then(function(json) {
+              $rootScope.$emit('get-youtube', json.data);
+            });
           }
         }
       }

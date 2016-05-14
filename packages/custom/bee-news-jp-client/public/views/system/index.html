@@ -80,4 +80,14 @@
     </ul >
   </section>
 
+  <h2>YouTube</h2>
+  <section class="welcome container-fluid">
+    <ul ng-repeat="item in youtube">
+      [{{ moment(item.time * 1000).fromNow() }}] <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
+      <a href="{{ item.url }}" target="_blank">
+        <img src="{{ item.image }}">
+      </a>
+    </ul>
+  </section
+
 </div>

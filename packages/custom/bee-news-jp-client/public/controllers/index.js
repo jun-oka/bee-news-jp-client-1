@@ -22,9 +22,14 @@ angular.module('mean.system')
         $scope.map = obj;
       });
 
+      $rootScope.$on('get-youtube', function(event, obj){
+        $scope.youtube = obj;
+      });
+      
       RssClient.getBlog();
       RssClient.getQA();
       RssClient.getBBS();
       RssClient.getMap();
+      RssClient.getYouTube();
     }
 ]);
