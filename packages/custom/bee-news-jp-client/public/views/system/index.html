@@ -56,6 +56,18 @@
     </ul >
   </section>
 
+  <!-- ニホンミツバチBBS(旧SNS) -->
+  <section class="welcome container-fluid">
+    <h3><a href="{{ sns.site_url}}" target="_blank">{{sns.name}}</a></h3>
+    <div ng-if="sns.items.length === 0">
+      <ul><li>3日以内の投稿はありません。</li></ul>
+    </div>
+    <ul ng-repeat="item in sns.items" >
+      <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
+    </ul >
+  </section
+
+  <!-- 知恵袋 -->
   <section class="welcome container-fluid">
     <h3><a href="{{ chiebukuro.site_url}}" target="_blank">{{chiebukuro.name}}</a></h3>
     <div ng-if="chiebukuro.items.length === 0">
@@ -66,7 +78,7 @@
     </ul >
   </section>
 
-  <!-- BBS -->
+  <!-- RSSに対応したBBS -->
   <section class="welcome container-fluid">
     <div ng-repeat="bbs in bbss" >
       <h3><a href="{{ bbs.site_url}}" target="_blank">{{bbs.name}}</a></h3>

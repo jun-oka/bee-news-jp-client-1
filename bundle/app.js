@@ -60299,9 +60299,14 @@
 	    $scope.news = obj;
 	  });
 	
+	  $rootScope.$on('get-sns', function (event, obj) {
+	    $scope.sns = obj;
+	  });
+	
 	  RssClient.getBlog();
 	  RssClient.getQA();
 	  RssClient.getBBS();
+	  RssClient.getSNS();
 	  RssClient.getMap();
 	  RssClient.getYouTube();
 	  RssClient.getChiebukuro();
@@ -74256,7 +74261,11 @@
 	    getNews: function getNews() {
 	      $http.jsonp("http://api.bee-news.net/news.php?callback=JSON_CALLBACK&day=3").then(function (json) {
 	        $rootScope.$emit('get-news', json.data);
-	        console.log('get-news');
+	      });
+	    },
+	    getSNS: function getSNS() {
+	      $http.jsonp("http://api.bee-news.net/sns.php?callback=JSON_CALLBACK&day=3").then(function (json) {
+	        $rootScope.$emit('get-sns', json.data);
 	      });
 	    }
 	  };
