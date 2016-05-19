@@ -30,11 +30,16 @@ angular.module('mean.system')
         $scope.chiebukuro = obj;
       });
 
+      $rootScope.$on('get-news', function(event, obj){
+        $scope.news = obj;
+      });
+
       RssClient.getBlog();
       RssClient.getQA();
       RssClient.getBBS();
       RssClient.getMap();
       RssClient.getYouTube();
       RssClient.getChiebukuro();
+      RssClient.getNews();
     }
 ]);

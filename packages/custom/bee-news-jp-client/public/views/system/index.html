@@ -79,6 +79,18 @@
     </div>
   </section>
 
+  <h2>ニュース</h2>
+    <section class="welcome container-fluid">
+      <h3><a href="{{ news.site_url}}" target="_blank">{{news.name}}</a></h3>
+      <div ng-if="news.items.length === 0">
+        <ul><li>3日以内の投稿はありません。</li></ul>
+      </div>
+      <ul ng-repeat="item in news.items" >
+        <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
+      </ul >
+    </section>
+  </section>
+
   <h2>捕獲情報</h2>
   <section class="welcome container-fluid">
     <h3><a href="{{ map.site_url}}" target="_blank">{{map.name}}</a></h3>
