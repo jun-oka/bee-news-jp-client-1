@@ -34,9 +34,14 @@ angular.module('mean.system')
         $scope.news = obj;
       });
 
+      $rootScope.$on('get-sns', function(event, obj){
+        $scope.sns = obj;
+      });
+
       RssClient.getBlog();
       RssClient.getQA();
       RssClient.getBBS();
+      RssClient.getSNS();
       RssClient.getMap();
       RssClient.getYouTube();
       RssClient.getChiebukuro();
