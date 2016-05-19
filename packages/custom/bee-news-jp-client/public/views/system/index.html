@@ -56,6 +56,16 @@
     </ul >
   </section>
 
+  <section class="welcome container-fluid">
+    <h3><a href="{{ chiebukuro.site_url}}" target="_blank">{{chiebukuro.name}}</a></h3>
+    <div ng-if="chiebukuro.items.length === 0">
+      <ul><li>3日以内の投稿はありません。</li></ul>
+    </div>
+    <ul ng-repeat="item in chiebukuro.items" >
+      <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></li>
+    </ul >
+  </section>
+
   <!-- BBS -->
   <section class="welcome container-fluid">
     <div ng-repeat="bbs in bbss" >
