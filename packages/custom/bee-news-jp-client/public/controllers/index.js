@@ -25,11 +25,16 @@ angular.module('mean.system')
       $rootScope.$on('get-youtube', function(event, obj){
         $scope.youtube = obj;
       });
-      
+
+      $rootScope.$on('get-chiebukuro', function(event, obj){
+        $scope.chiebukuro = obj;
+      });
+
       RssClient.getBlog();
       RssClient.getQA();
       RssClient.getBBS();
       RssClient.getMap();
       RssClient.getYouTube();
+      RssClient.getChiebukuro();
     }
 ]);

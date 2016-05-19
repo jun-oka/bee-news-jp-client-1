@@ -60291,11 +60291,18 @@
 	    $scope.youtube = obj;
 	  });
 	
+	  $rootScope.$on('get-chiebukuro', function (event, obj) {
+	    console.log('get-chiebukuro');
+	    $scope.chiebukuro = obj;
+	    console.log(obj);
+	  });
+	
 	  RssClient.getBlog();
 	  RssClient.getQA();
 	  RssClient.getBBS();
 	  RssClient.getMap();
 	  RssClient.getYouTube();
+	  RssClient.getChiebukuro();
 	}]);
 
 /***/ },
@@ -74236,6 +74243,12 @@
 	    getYouTube: function getYouTube() {
 	      $http.jsonp("http://api.bee-news.net/youtube.php?callback=JSON_CALLBACK&day=3").then(function (json) {
 	        $rootScope.$emit('get-youtube', json.data);
+	      });
+	    },
+	    getChiebukuro: function getChiebukuro() {
+	      $http.jsonp("http://api.bee-news.net/chie.php?callback=JSON_CALLBACK&day=3").then(function (json) {
+	        $rootScope.$emit('get-chiebukuro', json.data);
+	        console.log(json.data);
 	      });
 	    }
 	  };
