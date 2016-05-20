@@ -38,6 +38,11 @@ angular.module('mean.system')
         $scope.sns = obj;
       });
 
+      $rootScope.$on('get-facebook', function(event, obj){
+        $scope.facebookPages = obj;
+        console.log('get-facebook');
+      });
+
       RssClient.getBlog();
       RssClient.getQA();
       RssClient.getBBS();
@@ -46,5 +51,6 @@ angular.module('mean.system')
       RssClient.getYouTube();
       RssClient.getChiebukuro();
       RssClient.getNews();
+      RssClient.getFacebook();
     }
 ]);

@@ -60303,6 +60303,11 @@
 	    $scope.sns = obj;
 	  });
 	
+	  $rootScope.$on('get-facebook', function (event, obj) {
+	    $scope.facebookPages = obj;
+	    console.log('get-facebook');
+	  });
+	
 	  RssClient.getBlog();
 	  RssClient.getQA();
 	  RssClient.getBBS();
@@ -60311,6 +60316,7 @@
 	  RssClient.getYouTube();
 	  RssClient.getChiebukuro();
 	  RssClient.getNews();
+	  RssClient.getFacebook();
 	}]);
 
 /***/ },
@@ -74266,6 +74272,11 @@
 	    getSNS: function getSNS() {
 	      $http.jsonp("http://api.bee-news.net/sns.php?callback=JSON_CALLBACK&day=3").then(function (json) {
 	        $rootScope.$emit('get-sns', json.data);
+	      });
+	    },
+	    getFacebook: function getFacebook() {
+	      $http.jsonp("http://api.bee-news.net/facebook.php?callback=JSON_CALLBACK&day=3").then(function (json) {
+	        $rootScope.$emit('get-facebook', json.data);
 	      });
 	    }
 	  };
