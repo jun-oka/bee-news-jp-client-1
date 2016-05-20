@@ -114,6 +114,21 @@
     </ul >
   </section>
 
+  <h2>Facebook</h2>
+  <section class="welcome container-fluid">
+    <div ng-repeat="page in facebookPages" >
+      <h3><a href="{{ page.page_url}}" target="_blank">{{page.name}}</a></h3>
+      <div ng-if="page.items.length === 0">
+        <ul><li>3日以内の投稿はありません。</li></ul>
+      </div>
+      <ul ng-repeat="item in page.items" >
+        <li>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
+          <img src="{{ item.image}}">
+        </li>
+      </ul >
+    </div>
+  </section>
+
   <h2>YouTube</h2>
   <section class="welcome container-fluid">
     <ul ng-repeat="item in youtube">

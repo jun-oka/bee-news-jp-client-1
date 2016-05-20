@@ -43,6 +43,11 @@ angular.module('mean.system')
             $http.jsonp("http://api.bee-news.net/sns.php?callback=JSON_CALLBACK&day=3").then(function(json) {
               $rootScope.$emit('get-sns', json.data);
             });
+          },
+          getFacebook: function(){
+            $http.jsonp("http://api.bee-news.net/facebook.php?callback=JSON_CALLBACK&day=3").then(function(json) {
+              $rootScope.$emit('get-facebook', json.data);
+            });
           }
         }
       }
