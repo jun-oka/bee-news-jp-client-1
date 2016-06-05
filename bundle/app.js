@@ -581,7 +581,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 * jQuery JavaScript Library v2.2.3
+	 * jQuery JavaScript Library v2.2.4
 	 * http://jquery.com/
 	 *
 	 * Includes Sizzle.js
@@ -591,7 +591,7 @@
 	 * Released under the MIT license
 	 * http://jquery.org/license
 	 *
-	 * Date: 2016-04-05T19:26Z
+	 * Date: 2016-05-20T17:23Z
 	 */
 	
 	(function( global, factory ) {
@@ -647,7 +647,7 @@
 	
 	
 	var
-		version = "2.2.3",
+		version = "2.2.4",
 	
 		// Define a local copy of jQuery
 		jQuery = function( selector, context ) {
@@ -5588,13 +5588,14 @@
 		isDefaultPrevented: returnFalse,
 		isPropagationStopped: returnFalse,
 		isImmediatePropagationStopped: returnFalse,
+		isSimulated: false,
 	
 		preventDefault: function() {
 			var e = this.originalEvent;
 	
 			this.isDefaultPrevented = returnTrue;
 	
-			if ( e ) {
+			if ( e && !this.isSimulated ) {
 				e.preventDefault();
 			}
 		},
@@ -5603,7 +5604,7 @@
 	
 			this.isPropagationStopped = returnTrue;
 	
-			if ( e ) {
+			if ( e && !this.isSimulated ) {
 				e.stopPropagation();
 			}
 		},
@@ -5612,7 +5613,7 @@
 	
 			this.isImmediatePropagationStopped = returnTrue;
 	
-			if ( e ) {
+			if ( e && !this.isSimulated ) {
 				e.stopImmediatePropagation();
 			}
 	
@@ -6542,19 +6543,6 @@
 			val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 			styles = getStyles( elem ),
 			isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-	
-		// Support: IE11 only
-		// In IE 11 fullscreen elements inside of an iframe have
-		// 100x too small dimensions (gh-1764).
-		if ( document.msFullscreenElement && window.top !== window ) {
-	
-			// Support: IE11 only
-			// Running getBoundingClientRect on a disconnected node
-			// in IE throws an error.
-			if ( elem.getClientRects().length ) {
-				val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
-			}
-		}
 	
 		// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 		// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -8446,6 +8434,7 @@
 		},
 	
 		// Piggyback on a donor event to simulate a different one
+		// Used only for `focus(in | out)` events
 		simulate: function( type, elem, event ) {
 			var e = jQuery.extend(
 				new jQuery.Event(),
@@ -8453,27 +8442,10 @@
 				{
 					type: type,
 					isSimulated: true
-	
-					// Previously, `originalEvent: {}` was set here, so stopPropagation call
-					// would not be triggered on donor event, since in our own
-					// jQuery.event.stopPropagation function we had a check for existence of
-					// originalEvent.stopPropagation method, so, consequently it would be a noop.
-					//
-					// But now, this "simulate" function is used only for events
-					// for which stopPropagation() is noop, so there is no need for that anymore.
-					//
-					// For the 1.x branch though, guard for "click" and "submit"
-					// events is still used, but was moved to jQuery.event.stopPropagation function
-					// because `originalEvent` should point to the original event for the constancy
-					// with other events and for more focused logic
 				}
 			);
 	
 			jQuery.event.trigger( e, null, elem );
-	
-			if ( e.isDefaultPrevented() ) {
-				event.preventDefault();
-			}
 		}
 	
 	} );
@@ -10437,7 +10409,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.5.5
+	 * @license AngularJS v1.5.6
 	 * (c) 2010-2016 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -10495,7 +10467,7 @@
 	      return match;
 	    });
 	
-	    message += '\nhttp://errors.angularjs.org/1.5.5/' +
+	    message += '\nhttp://errors.angularjs.org/1.5.6/' +
 	      (module ? module + '/' : '') + code;
 	
 	    for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -10954,12 +10926,22 @@
 	 * functional style.
 	 *
 	   ```js
-	     function transformer(transformationFn, value) {
-	       return (transformationFn || angular.identity)(value);
-	     };
+	   function transformer(transformationFn, value) {
+	     return (transformationFn || angular.identity)(value);
+	   };
+	
+	   // E.g.
+	   function getResult(fn, input) {
+	     return (fn || angular.identity)(input);
+	   };
+	
+	   getResult(function(n) { return n * 2; }, 21);   // returns 42
+	   getResult(null, 21);                            // returns 21
+	   getResult(undefined, 21);                       // returns 21
 	   ```
-	  * @param {*} value to be returned.
-	  * @returns {*} the value passed in.
+	 *
+	 * @param {*} value to be returned.
+	 * @returns {*} the value passed in.
 	 */
 	function identity($) {return $;}
 	identity.$inject = [];
@@ -11204,8 +11186,8 @@
 	 */
 	function isElement(node) {
 	  return !!(node &&
-	    (node.nodeName  // we are a direct element
-	    || (node.prop && node.attr && node.find)));  // we have an on and find method part of jQuery API
+	    (node.nodeName  // We are a direct element.
+	    || (node.prop && node.attr && node.find)));  // We have an on and find method part of jQuery API.
 	}
 	
 	/**
@@ -11695,7 +11677,7 @@
 	            : fn.call(self);
 	        };
 	  } else {
-	    // in IE, native methods are not functions so they cannot be bound (note: they don't need to be)
+	    // In IE, native methods are not functions so they cannot be bound (note: they don't need to be).
 	    return fn;
 	  }
 	}
@@ -11732,6 +11714,27 @@
 	 * @param {boolean|number} [pretty=2] If set to true, the JSON output will contain newlines and whitespace.
 	 *    If set to an integer, the JSON output will contain that many spaces per indentation.
 	 * @returns {string|undefined} JSON-ified string representing `obj`.
+	 * @knownIssue
+	 *
+	 * The Safari browser throws a `RangeError` instead of returning `null` when it tries to stringify a `Date`
+	 * object with an invalid date value. The only reliable way to prevent this is to monkeypatch the
+	 * `Date.prototype.toJSON` method as follows:
+	 *
+	 * ```
+	 * var _DatetoJSON = Date.prototype.toJSON;
+	 * Date.prototype.toJSON = function() {
+	 *   try {
+	 *     return _DatetoJSON.call(this);
+	 *   } catch(e) {
+	 *     if (e instanceof RangeError) {
+	 *       return null;
+	 *     }
+	 *     throw e;
+	 *   }
+	 * };
+	 * ```
+	 *
+	 * See https://github.com/angular/angular.js/pull/14221 for more information.
 	 */
 	function toJson(obj, pretty) {
 	  if (isUndefined(obj)) return undefined;
@@ -11822,7 +11825,7 @@
 	  try {
 	    return decodeURIComponent(value);
 	  } catch (e) {
-	    // Ignore any invalid uri component
+	    // Ignore any invalid uri component.
 	  }
 	}
 	
@@ -12067,7 +12070,7 @@
 	      module,
 	      config = {};
 	
-	  // The element `element` has priority over any other element
+	  // The element `element` has priority over any other element.
 	  forEach(ngAttrPrefixes, function(prefix) {
 	    var name = prefix + 'app';
 	
@@ -12161,7 +12164,7 @@
 	
 	    if (element.injector()) {
 	      var tag = (element[0] === window.document) ? 'document' : startingTag(element);
-	      //Encode angle brackets to prevent input from being sanitized to empty string #8683
+	      // Encode angle brackets to prevent input from being sanitized to empty string #8683.
 	      throw ngMinErr(
 	          'btstrpd',
 	          "App already bootstrapped with this element '{0}'",
@@ -12917,11 +12920,11 @@
 	 * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
 	 */
 	var version = {
-	  full: '1.5.5',    // all of these placeholder strings will be replaced by grunt's
+	  full: '1.5.6',    // all of these placeholder strings will be replaced by grunt's
 	  major: 1,    // package task
 	  minor: 5,
-	  dot: 5,
-	  codeName: 'material-conspiration'
+	  dot: 6,
+	  codeName: 'arrow-stringification'
 	};
 	
 	
@@ -13148,8 +13151,8 @@
 	 * - [`removeData()`](http://api.jquery.com/removeData/)
 	 * - [`replaceWith()`](http://api.jquery.com/replaceWith/)
 	 * - [`text()`](http://api.jquery.com/text/)
-	 * - [`toggleClass()`](http://api.jquery.com/toggleClass/)
-	 * - [`triggerHandler()`](http://api.jquery.com/triggerHandler/) - Passes a dummy event object to handlers.
+	 * - [`toggleClass()`](http://api.jquery.com/toggleClass/) - Does not support a function as first argument
+	 * - [`triggerHandler()`](http://api.jquery.com/triggerHandler/) - Passes a dummy event object to handlers
 	 * - [`unbind()`](http://api.jquery.com/unbind/) - Does not support namespaces or event object as parameter
 	 * - [`val()`](http://api.jquery.com/val/)
 	 * - [`wrap()`](http://api.jquery.com/wrap/)
@@ -14309,8 +14312,16 @@
 	var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 	var $injectorMinErr = minErr('$injector');
 	
+	function stringifyFn(fn) {
+	  // Support: Chrome 50-51 only
+	  // Creating a new string by adding `' '` at the end, to hack around some bug in Chrome v50/51
+	  // (See https://github.com/angular/angular.js/issues/14487.)
+	  // TODO (gkalpak): Remove workaround when Chrome v52 is released
+	  return Function.prototype.toString.call(fn) + ' ';
+	}
+	
 	function extractArgs(fn) {
-	  var fnText = Function.prototype.toString.call(fn).replace(STRIP_COMMENTS, ''),
+	  var fnText = stringifyFn(fn).replace(STRIP_COMMENTS, ''),
 	      args = fnText.match(ARROW_ARG) || fnText.match(FN_ARGS);
 	  return args;
 	}
@@ -14578,18 +14589,20 @@
 	 * these cases the {@link auto.$provide $provide} service has additional helper methods to register
 	 * services without specifying a provider.
 	 *
-	 * * {@link auto.$provide#provider provider(provider)} - registers a **service provider** with the
+	 * * {@link auto.$provide#provider provider(name, provider)} - registers a **service provider** with the
 	 *     {@link auto.$injector $injector}
-	 * * {@link auto.$provide#constant constant(obj)} - registers a value/object that can be accessed by
+	 * * {@link auto.$provide#constant constant(name, obj)} - registers a value/object that can be accessed by
 	 *     providers and services.
-	 * * {@link auto.$provide#value value(obj)} - registers a value/object that can only be accessed by
+	 * * {@link auto.$provide#value value(name, obj)} - registers a value/object that can only be accessed by
 	 *     services, not providers.
-	 * * {@link auto.$provide#factory factory(fn)} - registers a service **factory function**, `fn`,
+	 * * {@link auto.$provide#factory factory(name, fn)} - registers a service **factory function**
 	 *     that will be wrapped in a **service provider** object, whose `$get` property will contain the
 	 *     given factory function.
-	 * * {@link auto.$provide#service service(class)} - registers a **constructor function**, `class`
+	 * * {@link auto.$provide#service service(name, Fn)} - registers a **constructor function**
 	 *     that will be wrapped in a **service provider** object, whose `$get` property will instantiate
 	 *      a new object using the given constructor function.
+	 * * {@link auto.$provide#decorator decorator(name, decorFn)} - registers a **decorator function** that
+	 *      will be able to modify or replace the implementation of another service.
 	 *
 	 * See the individual methods for more information and examples.
 	 */
@@ -14846,18 +14859,20 @@
 	 * @name $provide#decorator
 	 * @description
 	 *
-	 * Register a **service decorator** with the {@link auto.$injector $injector}. A service decorator
+	 * Register a **decorator function** with the {@link auto.$injector $injector}. A decorator function
 	 * intercepts the creation of a service, allowing it to override or modify the behavior of the
-	 * service. The object returned by the decorator may be the original service, or a new service
-	 * object which replaces or wraps and delegates to the original service.
+	 * service. The return value of the decorator function may be the original service, or a new service
+	 * that replaces (or wraps and delegates to) the original service.
+	 *
+	 * You can find out more about using decorators in the {@link guide/decorators} guide.
 	 *
 	 * @param {string} name The name of the service to decorate.
 	 * @param {Function|Array.<string|Function>} decorator This function will be invoked when the service needs to be
-	 *    instantiated and should return the decorated service instance. The function is called using
+	 *    provided and should return the decorated service instance. The function is called using
 	 *    the {@link auto.$injector#invoke injector.invoke} method and is therefore fully injectable.
 	 *    Local injection arguments:
 	 *
-	 *    * `$delegate` - The original service instance, which can be monkey patched, configured,
+	 *    * `$delegate` - The original service instance, which can be replaced, monkey patched, configured,
 	 *      decorated or delegated to.
 	 *
 	 * @example
@@ -15083,7 +15098,7 @@
 	      // Workaround for MS Edge.
 	      // Check https://connect.microsoft.com/IE/Feedback/Details/2211653
 	      return typeof func === 'function'
-	        && /^(?:class\s|constructor\()/.test(Function.prototype.toString.call(func));
+	        && /^(?:class\s|constructor\()/.test(stringifyFn(func));
 	    }
 	
 	    function invoke(fn, self, locals, serviceName) {
@@ -15174,7 +15189,7 @@
 	   * When called, it scrolls to the element related to the specified `hash` or (if omitted) to the
 	   * current value of {@link ng.$location#hash $location.hash()}, according to the rules specified
 	   * in the
-	   * [HTML5 spec](http://www.w3.org/html/wg/drafts/html/master/browsers.html#the-indicated-part-of-the-document).
+	   * [HTML5 spec](http://www.w3.org/html/wg/drafts/html/master/browsers.html#an-indicated-part-of-the-document).
 	   *
 	   * It also watches the {@link ng.$location#hash $location.hash()} and automatically scrolls to
 	   * match any anchor whenever it changes. This can be disabled by calling
@@ -16412,7 +16427,7 @@
 	        // Do the assignment again so that those two variables are referentially identical.
 	        lastHistoryState = cachedState;
 	      } else {
-	        if (!sameBase || pendingLocation) {
+	        if (!sameBase) {
 	          pendingLocation = url;
 	        }
 	        if (replace) {
@@ -16425,6 +16440,9 @@
 	        if (location.href !== url) {
 	          pendingLocation = url;
 	        }
+	      }
+	      if (pendingLocation) {
+	        pendingLocation = url;
 	      }
 	      return self;
 	    // getter
@@ -17342,8 +17360,9 @@
 	 * If the `require` property is an object and `bindToController` is truthy, then the required controllers are
 	 * bound to the controller using the keys of the `require` property. This binding occurs after all the controllers
 	 * have been constructed but before `$onInit` is called.
+	 * If the name of the required controller is the same as the local name (the key), the name can be
+	 * omitted. For example, `{parentDir: '^^'}` is equivalent to `{parentDir: '^^parentDir'}`.
 	 * See the {@link $compileProvider#component} helper for an example of how this can be used.
-	 *
 	 * If no such required directive(s) can be found, or if the directive does not have a controller, then an error is
 	 * raised (unless no link function is specified and the required controllers are not being bound to the directive
 	 * controller, in which case error checking is skipped). The name can be prefixed with:
@@ -17972,6 +17991,20 @@
 	    }
 	  }
 	
+	  function getDirectiveRequire(directive) {
+	    var require = directive.require || (directive.controller && directive.name);
+	
+	    if (!isArray(require) && isObject(require)) {
+	      forEach(require, function(value, key) {
+	        var match = value.match(REQUIRE_PREFIX_REGEXP);
+	        var name = value.substring(match[0].length);
+	        if (!name) require[key] = match[0] + key;
+	      });
+	    }
+	
+	    return require;
+	  }
+	
 	  /**
 	   * @ngdoc method
 	   * @name $compileProvider#directive
@@ -18008,7 +18041,7 @@
 	                directive.priority = directive.priority || 0;
 	                directive.index = index;
 	                directive.name = directive.name || name;
-	                directive.require = directive.require || (directive.controller && directive.name);
+	                directive.require = getDirectiveRequire(directive);
 	                directive.restrict = directive.restrict || 'EA';
 	                directive.$$moduleName = directiveFactory.$$moduleName;
 	                directives.push(directive);
@@ -18465,7 +18498,7 @@
 	            (nodeName === 'img' && key === 'src')) {
 	          // sanitize a[href] and img[src] values
 	          this[key] = value = $$sanitizeUri(value, key === 'src');
-	        } else if (nodeName === 'img' && key === 'srcset') {
+	        } else if (nodeName === 'img' && key === 'srcset' && isDefined(value)) {
 	          // sanitize img[srcset] values
 	          var result = "";
 	
@@ -18624,7 +18657,8 @@
 	    compile.$$createComment = function(directiveName, comment) {
 	      var content = '';
 	      if (debugInfoEnabled) {
-	        content = ' ' + (directiveName || '') + ': ' + (comment || '') + ' ';
+	        content = ' ' + (directiveName || '') + ': ';
+	        if (comment) content += comment + ' ';
 	      }
 	      return window.document.createComment(content);
 	    };
@@ -19356,10 +19390,11 @@
 	        } else if (directive.compile) {
 	          try {
 	            linkFn = directive.compile($compileNode, templateAttrs, childTranscludeFn);
+	            var context = directive.$$originalDirective || directive;
 	            if (isFunction(linkFn)) {
-	              addLinkFns(null, linkFn, attrStart, attrEnd);
+	              addLinkFns(null, bind(context, linkFn), attrStart, attrEnd);
 	            } else if (linkFn) {
-	              addLinkFns(linkFn.pre, linkFn.post, attrStart, attrEnd);
+	              addLinkFns(bind(context, linkFn.pre), bind(context, linkFn.post), attrStart, attrEnd);
 	            }
 	          } catch (e) {
 	            $exceptionHandler(e, startingTag($compileNode));
@@ -20228,14 +20263,13 @@
 	
 	            parentGet = $parse(attrs[attrName]);
 	
-	            destination[scopeName] = parentGet(scope);
+	            var initialValue = destination[scopeName] = parentGet(scope);
 	            initialChanges[scopeName] = new SimpleChange(_UNINITIALIZED_VALUE, destination[scopeName]);
 	
 	            removeWatch = scope.$watch(parentGet, function parentValueWatchAction(newValue, oldValue) {
-	              if (newValue === oldValue) {
-	                // If the new and old values are identical then this is the first time the watch has been triggered
-	                // So instead we use the current value on the destination as the old value
-	                oldValue = destination[scopeName];
+	              if (oldValue === newValue) {
+	                if (oldValue === initialValue) return;
+	                oldValue = initialValue;
 	              }
 	              recordChanges(scopeName, newValue, oldValue);
 	              destination[scopeName] = newValue;
@@ -21138,10 +21172,13 @@
 	     *   - **config** – `{Object}` – The configuration object that was used to generate the request.
 	     *   - **statusText** – `{string}` – HTTP status text of the response.
 	     *
-	     * A response status code between 200 and 299 is considered a success status and
-	     * will result in the success callback being called. Note that if the response is a redirect,
-	     * XMLHttpRequest will transparently follow it, meaning that the error callback will not be
-	     * called for such responses.
+	     * A response status code between 200 and 299 is considered a success status and will result in
+	     * the success callback being called. Any response status code outside of that range is
+	     * considered an error status and will result in the error callback being called.
+	     * Also, status codes less than -1 are normalized to zero. -1 usually means the request was
+	     * aborted, e.g. using a `config.timeout`.
+	     * Note that if the response is a redirect, XMLHttpRequest will transparently follow it, meaning
+	     * that the outcome (success or error) will be determined by the final response status code.
 	     *
 	     *
 	     * ## Shortcut methods
@@ -22471,6 +22508,30 @@
 	     *  </file>
 	     * </example>
 	     *
+	     * @knownIssue
+	     * It is currently not possible for an interpolated expression to contain the interpolation end
+	     * symbol. For example, `{{ '}}' }}` will be incorrectly interpreted as `{{ ' }}` + `' }}`, i.e.
+	     * an interpolated expression consisting of a single-quote (`'`) and the `' }}` string.
+	     *
+	     * @knownIssue
+	     * All directives and components must use the standard `{{` `}}` interpolation symbols
+	     * in their templates. If you change the application interpolation symbols the {@link $compile}
+	     * service will attempt to denormalize the standard symbols to the custom symbols.
+	     * The denormalization process is not clever enough to know not to replace instances of the standard
+	     * symbols where they would not normally be treated as interpolation symbols. For example in the following
+	     * code snippet the closing braces of the literal object will get incorrectly denormalized:
+	     *
+	     * ```
+	     * <div data-context='{"context":{"id":3,"type":"page"}}">
+	     * ```
+	     *
+	     * The workaround is to ensure that such instances are separated by whitespace:
+	     * ```
+	     * <div data-context='{"context":{"id":3,"type":"page"} }">
+	     * ```
+	     *
+	     * See https://github.com/angular/angular.js/pull/14610#issuecomment-219401099 for more information.
+	     *
 	     * @param {string} text The text with markup to interpolate.
 	     * @param {boolean=} mustHaveExpression if set to true then the interpolation string must have
 	     *    embedded expression in order to return an interpolation function. Strings with no
@@ -22893,17 +22954,20 @@
 	  }
 	}
 	
+	function startsWith(haystack, needle) {
+	  return haystack.lastIndexOf(needle, 0) === 0;
+	}
 	
 	/**
 	 *
-	 * @param {string} begin
-	 * @param {string} whole
-	 * @returns {string} returns text from whole after begin or undefined if it does not begin with
-	 *                   expected string.
+	 * @param {string} base
+	 * @param {string} url
+	 * @returns {string} returns text from `url` after `base` or `undefined` if it does not begin with
+	 *                   the expected string.
 	 */
-	function beginsWith(begin, whole) {
-	  if (whole.indexOf(begin) === 0) {
-	    return whole.substr(begin.length);
+	function stripBaseUrl(base, url) {
+	  if (startsWith(url, base)) {
+	    return url.substr(base.length);
 	  }
 	}
 	
@@ -22949,7 +23013,7 @@
 	   * @private
 	   */
 	  this.$$parse = function(url) {
-	    var pathUrl = beginsWith(appBaseNoFile, url);
+	    var pathUrl = stripBaseUrl(appBaseNoFile, url);
 	    if (!isString(pathUrl)) {
 	      throw $locationMinErr('ipthprfx', 'Invalid url "{0}", missing path prefix "{1}".', url,
 	          appBaseNoFile);
@@ -22986,14 +23050,14 @@
 	    var appUrl, prevAppUrl;
 	    var rewrittenUrl;
 	
-	    if (isDefined(appUrl = beginsWith(appBase, url))) {
+	    if (isDefined(appUrl = stripBaseUrl(appBase, url))) {
 	      prevAppUrl = appUrl;
-	      if (isDefined(appUrl = beginsWith(basePrefix, appUrl))) {
-	        rewrittenUrl = appBaseNoFile + (beginsWith('/', appUrl) || appUrl);
+	      if (isDefined(appUrl = stripBaseUrl(basePrefix, appUrl))) {
+	        rewrittenUrl = appBaseNoFile + (stripBaseUrl('/', appUrl) || appUrl);
 	      } else {
 	        rewrittenUrl = appBase + prevAppUrl;
 	      }
-	    } else if (isDefined(appUrl = beginsWith(appBaseNoFile, url))) {
+	    } else if (isDefined(appUrl = stripBaseUrl(appBaseNoFile, url))) {
 	      rewrittenUrl = appBaseNoFile + appUrl;
 	    } else if (appBaseNoFile == url + '/') {
 	      rewrittenUrl = appBaseNoFile;
@@ -23027,14 +23091,14 @@
 	   * @private
 	   */
 	  this.$$parse = function(url) {
-	    var withoutBaseUrl = beginsWith(appBase, url) || beginsWith(appBaseNoFile, url);
+	    var withoutBaseUrl = stripBaseUrl(appBase, url) || stripBaseUrl(appBaseNoFile, url);
 	    var withoutHashUrl;
 	
 	    if (!isUndefined(withoutBaseUrl) && withoutBaseUrl.charAt(0) === '#') {
 	
 	      // The rest of the url starts with a hash so we have
 	      // got either a hashbang path or a plain hash fragment
-	      withoutHashUrl = beginsWith(hashPrefix, withoutBaseUrl);
+	      withoutHashUrl = stripBaseUrl(hashPrefix, withoutBaseUrl);
 	      if (isUndefined(withoutHashUrl)) {
 	        // There was no hashbang prefix so we just have a hash fragment
 	        withoutHashUrl = withoutBaseUrl;
@@ -23082,7 +23146,7 @@
 	      var firstPathSegmentMatch;
 	
 	      //Get the relative path from the input URL.
-	      if (url.indexOf(base) === 0) {
+	      if (startsWith(url, base)) {
 	        url = url.replace(base, '');
 	      }
 	
@@ -23145,7 +23209,7 @@
 	
 	    if (appBase == stripHash(url)) {
 	      rewrittenUrl = url;
-	    } else if ((appUrl = beginsWith(appBaseNoFile, url))) {
+	    } else if ((appUrl = stripBaseUrl(appBaseNoFile, url))) {
 	      rewrittenUrl = appBase + hashPrefix + appUrl;
 	    } else if (appBaseNoFile === url + '/') {
 	      rewrittenUrl = appBaseNoFile;
@@ -23327,7 +23391,7 @@
 	   * ```
 	   *
 	   * @param {(string|number)=} path New path
-	   * @return {string} path
+	   * @return {(string|object)} path if called with no parameters, or `$location` if called with a parameter
 	   */
 	  path: locationGetterSetter('$$path', function(path) {
 	    path = path !== null ? path.toString() : '';
@@ -23753,7 +23817,7 @@
 	    // update $location when $browser url changes
 	    $browser.onUrlChange(function(newUrl, newState) {
 	
-	      if (isUndefined(beginsWith(appBaseNoFile, newUrl))) {
+	      if (isUndefined(stripBaseUrl(appBaseNoFile, newUrl))) {
 	        // If we are navigating outside of the app then force a reload
 	        $window.location.href = newUrl;
 	        return;
@@ -24589,13 +24653,28 @@
 	        property = {type: AST.Property, kind: 'init'};
 	        if (this.peek().constant) {
 	          property.key = this.constant();
+	          property.computed = false;
+	          this.consume(':');
+	          property.value = this.expression();
 	        } else if (this.peek().identifier) {
 	          property.key = this.identifier();
+	          property.computed = false;
+	          if (this.peek(':')) {
+	            this.consume(':');
+	            property.value = this.expression();
+	          } else {
+	            property.value = property.key;
+	          }
+	        } else if (this.peek('[')) {
+	          this.consume('[');
+	          property.key = this.expression();
+	          this.consume(']');
+	          property.computed = true;
+	          this.consume(':');
+	          property.value = this.expression();
 	        } else {
 	          this.throwError("invalid key", this.peek());
 	        }
-	        this.consume(':');
-	        property.value = this.expression();
 	        properties.push(property);
 	      } while (this.expect(','));
 	    }
@@ -24764,7 +24843,7 @@
 	    argsToWatch = [];
 	    forEach(ast.properties, function(property) {
 	      findConstantAndWatchExpressions(property.value, $filter);
-	      allConstants = allConstants && property.value.constant;
+	      allConstants = allConstants && property.value.constant && !property.computed;
 	      if (!property.value.constant) {
 	        argsToWatch.push.apply(argsToWatch, property.value.toWatch);
 	      }
@@ -24936,7 +25015,7 @@
 	  },
 	
 	  recurse: function(ast, intoId, nameId, recursionFn, create, skipWatchIdCheck) {
-	    var left, right, self = this, args, expression;
+	    var left, right, self = this, args, expression, computed;
 	    recursionFn = recursionFn || noop;
 	    if (!skipWatchIdCheck && isDefined(ast.watchId)) {
 	      intoId = intoId || this.nextId();
@@ -25133,17 +25212,41 @@
 	      break;
 	    case AST.ObjectExpression:
 	      args = [];
+	      computed = false;
 	      forEach(ast.properties, function(property) {
-	        self.recurse(property.value, self.nextId(), undefined, function(expr) {
-	          args.push(self.escape(
-	              property.key.type === AST.Identifier ? property.key.name :
-	                ('' + property.key.value)) +
-	              ':' + expr);
-	        });
+	        if (property.computed) {
+	          computed = true;
+	        }
 	      });
-	      expression = '{' + args.join(',') + '}';
-	      this.assign(intoId, expression);
-	      recursionFn(expression);
+	      if (computed) {
+	        intoId = intoId || this.nextId();
+	        this.assign(intoId, '{}');
+	        forEach(ast.properties, function(property) {
+	          if (property.computed) {
+	            left = self.nextId();
+	            self.recurse(property.key, left);
+	          } else {
+	            left = property.key.type === AST.Identifier ?
+	                       property.key.name :
+	                       ('' + property.key.value);
+	          }
+	          right = self.nextId();
+	          self.recurse(property.value, right);
+	          self.assign(self.member(intoId, left, property.computed), right);
+	        });
+	      } else {
+	        forEach(ast.properties, function(property) {
+	          self.recurse(property.value, ast.constant ? undefined : self.nextId(), undefined, function(expr) {
+	            args.push(self.escape(
+	                property.key.type === AST.Identifier ? property.key.name :
+	                  ('' + property.key.value)) +
+	                ':' + expr);
+	          });
+	        });
+	        expression = '{' + args.join(',') + '}';
+	        this.assign(intoId, expression);
+	      }
+	      recursionFn(intoId || expression);
 	      break;
 	    case AST.ThisExpression:
 	      this.assign(intoId, 's');
@@ -25469,16 +25572,28 @@
 	    case AST.ObjectExpression:
 	      args = [];
 	      forEach(ast.properties, function(property) {
-	        args.push({key: property.key.type === AST.Identifier ?
-	                        property.key.name :
-	                        ('' + property.key.value),
-	                   value: self.recurse(property.value)
-	        });
+	        if (property.computed) {
+	          args.push({key: self.recurse(property.key),
+	                     computed: true,
+	                     value: self.recurse(property.value)
+	          });
+	        } else {
+	          args.push({key: property.key.type === AST.Identifier ?
+	                          property.key.name :
+	                          ('' + property.key.value),
+	                     computed: false,
+	                     value: self.recurse(property.value)
+	          });
+	        }
 	      });
 	      return function(scope, locals, assign, inputs) {
 	        var value = {};
 	        for (var i = 0; i < args.length; ++i) {
-	          value[args[i].key] = args[i].value(scope, locals, assign, inputs);
+	          if (args[i].computed) {
+	            value[args[i].key(scope, locals, assign, inputs)] = args[i].value(scope, locals, assign, inputs);
+	          } else {
+	            value[args[i].key] = args[i].value(scope, locals, assign, inputs);
+	          }
 	        }
 	        return context ? {value: value} : value;
 	      };
@@ -27477,15 +27592,19 @@
 	          dirty = false;
 	          current = target;
 	
-	          while (asyncQueue.length) {
+	          // It's safe for asyncQueuePosition to be a local variable here because this loop can't
+	          // be reentered recursively. Calling $digest from a function passed to $applyAsync would
+	          // lead to a '$digest already in progress' error.
+	          for (var asyncQueuePosition = 0; asyncQueuePosition < asyncQueue.length; asyncQueuePosition++) {
 	            try {
-	              asyncTask = asyncQueue.shift();
+	              asyncTask = asyncQueue[asyncQueuePosition];
 	              asyncTask.scope.$eval(asyncTask.expression, asyncTask.locals);
 	            } catch (e) {
 	              $exceptionHandler(e);
 	            }
 	            lastDirtyWatch = null;
 	          }
+	          asyncQueue.length = 0;
 	
 	          traverseScopesLoop:
 	          do { // "traverse the scopes" loop
@@ -27556,13 +27675,15 @@
 	
 	        clearPhase();
 	
-	        while (postDigestQueue.length) {
+	        // postDigestQueuePosition isn't local here because this loop can be reentered recursively.
+	        while (postDigestQueuePosition < postDigestQueue.length) {
 	          try {
-	            postDigestQueue.shift()();
+	            postDigestQueue[postDigestQueuePosition++]();
 	          } catch (e) {
 	            $exceptionHandler(e);
 	          }
 	        }
+	        postDigestQueue.length = postDigestQueuePosition = 0;
 	      },
 	
 	
@@ -28016,6 +28137,8 @@
 	    var asyncQueue = $rootScope.$$asyncQueue = [];
 	    var postDigestQueue = $rootScope.$$postDigestQueue = [];
 	    var applyAsyncQueue = $rootScope.$$applyAsyncQueue = [];
+	
+	    var postDigestQueuePosition = 0;
 	
 	    return $rootScope;
 	
@@ -28585,7 +28708,7 @@
 	 * You can ensure your document is in standards mode and not quirks mode by adding `<!doctype html>`
 	 * to the top of your HTML document.
 	 *
-	 * SCE assists in writing code in way that (a) is secure by default and (b) makes auditing for
+	 * SCE assists in writing code in a way that (a) is secure by default and (b) makes auditing for
 	 * security vulnerabilities such as XSS, clickjacking, etc. a lot easier.
 	 *
 	 * Here's an example of a binding in a privileged context:
@@ -29262,7 +29385,7 @@
 	      for (var prop in bodyStyle) {
 	        if (match = vendorRegex.exec(prop)) {
 	          vendorPrefix = match[0];
-	          vendorPrefix = vendorPrefix.substr(0, 1).toUpperCase() + vendorPrefix.substr(1);
+	          vendorPrefix = vendorPrefix[0].toUpperCase() + vendorPrefix.substr(1);
 	          break;
 	        }
 	      }
@@ -29385,7 +29508,7 @@
 	      // are included in there. This also makes Angular accept any script
 	      // directive, no matter its name. However, we still need to unwrap trusted
 	      // types.
-	      if (!isString(tpl) || !$templateCache.get(tpl)) {
+	      if (!isString(tpl) || isUndefined($templateCache.get(tpl))) {
 	        tpl = $sce.getTrustedResourceUrl(tpl);
 	      }
 	
@@ -30567,7 +30690,7 @@
 	
 	    // extract decimals digits
 	    if (integerLen > 0) {
-	      decimals = digits.splice(integerLen);
+	      decimals = digits.splice(integerLen, digits.length);
 	    } else {
 	      decimals = digits;
 	      digits = [0];
@@ -30576,10 +30699,10 @@
 	    // format the integer digits with grouping separators
 	    var groups = [];
 	    if (digits.length >= pattern.lgSize) {
-	      groups.unshift(digits.splice(-pattern.lgSize).join(''));
+	      groups.unshift(digits.splice(-pattern.lgSize, digits.length).join(''));
 	    }
 	    while (digits.length > pattern.gSize) {
-	      groups.unshift(digits.splice(-pattern.gSize).join(''));
+	      groups.unshift(digits.splice(-pattern.gSize, digits.length).join(''));
 	    }
 	    if (digits.length) {
 	      groups.unshift(digits.join(''));
@@ -32518,11 +32641,11 @@
 	             <span class="error" ng-show="myForm.input.$error.pattern">
 	               Single word only!</span>
 	           </div>
-	           <tt>text = {{example.text}}</tt><br/>
-	           <tt>myForm.input.$valid = {{myForm.input.$valid}}</tt><br/>
-	           <tt>myForm.input.$error = {{myForm.input.$error}}</tt><br/>
-	           <tt>myForm.$valid = {{myForm.$valid}}</tt><br/>
-	           <tt>myForm.$error.required = {{!!myForm.$error.required}}</tt><br/>
+	           <code>text = {{example.text}}</code><br/>
+	           <code>myForm.input.$valid = {{myForm.input.$valid}}</code><br/>
+	           <code>myForm.input.$error = {{myForm.input.$error}}</code><br/>
+	           <code>myForm.$valid = {{myForm.$valid}}</code><br/>
+	           <code>myForm.$error.required = {{!!myForm.$error.required}}</code><br/>
 	          </form>
 	        </file>
 	        <file name="protractor.js" type="protractor">
@@ -34401,8 +34524,9 @@
 	    restrict: 'A',
 	    compile: function ngBindHtmlCompile(tElement, tAttrs) {
 	      var ngBindHtmlGetter = $parse(tAttrs.ngBindHtml);
-	      var ngBindHtmlWatch = $parse(tAttrs.ngBindHtml, function getStringValue(value) {
-	        return (value || '').toString();
+	      var ngBindHtmlWatch = $parse(tAttrs.ngBindHtml, function sceValueOf(val) {
+	        // Unwrap the value to compare the actual inner safe value, not the wrapper object.
+	        return $sce.valueOf(val);
 	      });
 	      $compile.$$addBindingClass(tElement);
 	
@@ -34410,9 +34534,9 @@
 	        $compile.$$addBindingInfo(element, attr.ngBindHtml);
 	
 	        scope.$watch(ngBindHtmlWatch, function ngBindHtmlWatchAction() {
-	          // we re-evaluate the expr because we want a TrustedValueHolderType
-	          // for $sce, not a string
-	          element.html($sce.getTrustedHtml(ngBindHtmlGetter(scope)) || '');
+	          // The watched value is the unwrapped value. To avoid re-escaping, use the direct getter.
+	          var value = ngBindHtmlGetter(scope);
+	          element.html($sce.getTrustedHtml(value) || '');
 	        });
 	      };
 	    }
@@ -34565,7 +34689,9 @@
 	        }
 	
 	        function ngClassWatchAction(newVal) {
-	          if (selector === true || scope.$index % 2 === selector) {
+	          // jshint bitwise: false
+	          if (selector === true || (scope.$index & 1) === selector) {
+	          // jshint bitwise: true
 	            var newClasses = arrayClasses(newVal || []);
 	            if (!oldVal) {
 	              addClasses(newClasses);
@@ -40791,6 +40917,7 @@
 	/**
 	 * @ngdoc directive
 	 * @name ngRequired
+	 * @restrict A
 	 *
 	 * @description
 	 *
@@ -43131,7 +43258,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.5.5
+	 * @license AngularJS v1.5.6
 	 * (c) 2010-2016 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -43145,6 +43272,7 @@
 	 * @description
 	 *
 	 * Namespace from 'angular-mocks.js' which contains testing related code.
+	 *
 	 */
 	angular.mock = {};
 	
@@ -43156,7 +43284,7 @@
 	 * @description
 	 * This service is a mock implementation of {@link ng.$browser}. It provides fake
 	 * implementation for commonly used browser apis that are hard to test, e.g. setTimeout, xhr,
-	 * cookies, etc...
+	 * cookies, etc.
 	 *
 	 * The api of this service is the same as that of the real {@link ng.$browser $browser}, except
 	 * that there are several helper methods available which can be used in tests.
@@ -43358,13 +43486,13 @@
 	   * @param {string} mode Mode of operation, defaults to `rethrow`.
 	   *
 	   *   - `log`: Sometimes it is desirable to test that an error is thrown, for this case the `log`
-	   *            mode stores an array of errors in `$exceptionHandler.errors`, to allow later
-	   *            assertion of them. See {@link ngMock.$log#assertEmpty assertEmpty()} and
-	   *            {@link ngMock.$log#reset reset()}
+	   *     mode stores an array of errors in `$exceptionHandler.errors`, to allow later assertion of
+	   *     them. See {@link ngMock.$log#assertEmpty assertEmpty()} and
+	   *     {@link ngMock.$log#reset reset()}.
 	   *   - `rethrow`: If any errors are passed to the handler in tests, it typically means that there
-	   *                is a bug in the application or test, so this mock will make these tests fail.
-	   *                For any implementations that expect exceptions to be thrown, the `rethrow` mode
-	   *                will also maintain a log of thrown errors.
+	   *     is a bug in the application or test, so this mock will make these tests fail. For any
+	   *     implementations that expect exceptions to be thrown, the `rethrow` mode will also maintain
+	   *     a log of thrown errors in `$exceptionHandler.errors`.
 	   */
 	  this.mode = function(mode) {
 	
@@ -43898,6 +44026,8 @@
 	 * @description
 	 * Mock implementation of the {@link ng.$animate `$animate`} service. Exposes two additional methods
 	 * for testing animations.
+	 *
+	 * You need to require the `ngAnimateMock` module in your test suite for instance `beforeEach(module('ngAnimateMock'))`
 	 */
 	angular.mock.animate = angular.module('ngAnimateMock', ['ng'])
 	
@@ -44135,8 +44265,10 @@
 	 * Fake HTTP backend implementation suitable for unit testing applications that use the
 	 * {@link ng.$http $http service}.
 	 *
-	 * *Note*: For fake HTTP backend implementation suitable for end-to-end testing or backend-less
+	 * <div class="alert alert-info">
+	 * **Note**: For fake HTTP backend implementation suitable for end-to-end testing or backend-less
 	 * development please see {@link ngMockE2E.$httpBackend e2e $httpBackend mock}.
+	 * </div>
 	 *
 	 * During unit testing, we want our unit tests to run quickly and have no external dependencies so
 	 * we don’t want to send [XHR](https://developer.mozilla.org/en/xmlhttprequest) or
@@ -44528,7 +44660,7 @@
 	          // if $browser specified, we do auto flush all requests
 	          ($browser ? $browser.defer : responsesPush)(wrapResponse(definition));
 	        } else if (definition.passThrough) {
-	          $delegate(method, url, data, callback, headers, timeout, withCredentials, responseType);
+	          $delegate(method, url, data, callback, headers, timeout, withCredentials, responseType, eventHandlers, uploadEventHandlers);
 	        } else throw new Error('No response defined !');
 	        return;
 	      }
@@ -45007,6 +45139,15 @@
 	
 	function MockHttpExpectation(method, url, data, headers, keys) {
 	
+	  function getUrlParams(u) {
+	    var params = u.slice(u.indexOf('?') + 1).split('&');
+	    return params.sort();
+	  }
+	
+	  function compareUrl(u) {
+	    return (url.slice(0, url.indexOf('?')) == u.slice(0, u.indexOf('?')) && getUrlParams(url).join() == getUrlParams(u).join());
+	  }
+	
 	  this.data = data;
 	  this.headers = headers;
 	
@@ -45022,7 +45163,7 @@
 	    if (!url) return true;
 	    if (angular.isFunction(url.test)) return url.test(u);
 	    if (angular.isFunction(url)) return url(u);
-	    return url == u;
+	    return (url == u || compareUrl(u));
 	  };
 	
 	  this.matchHeaders = function(h) {
@@ -45387,6 +45528,34 @@
 	 *
 	 * <div doc-module-components="ngMock"></div>
 	 *
+	 * @installation
+	 *
+	 *  First, download the file:
+	 *  * [Google CDN](https://developers.google.com/speed/libraries/devguide#angularjs) e.g.
+	 *    `"//ajax.googleapis.com/ajax/libs/angularjs/X.Y.Z/angular-mocks.js"`
+	 *  * [NPM](https://www.npmjs.com/) e.g. `npm install angular-mocks@X.Y.Z`
+	 *  * [Bower](http://bower.io) e.g. `bower install angular-mocks@X.Y.Z`
+	 *  * [code.angularjs.org](https://code.angularjs.org/) (discouraged for production use)  e.g.
+	 *    `"//code.angularjs.org/X.Y.Z/angular-mocks.js"`
+	 *
+	 * where X.Y.Z is the AngularJS version you are running.
+	 *
+	 * Then, configure your test runner to load `angular-mocks.js` after `angular.js`.
+	 * This example uses <a href="http://karma-runner.github.io/">Karma</a>:
+	 *
+	 * ```
+	 * config.set({
+	 *   files: [
+	 *     'build/angular.js', // and other module files you need
+	 *     'build/angular-mocks.js',
+	 *     '<path/to/application/files>',
+	 *     '<path/to/spec/files>'
+	 *   ]
+	 * });
+	 * ```
+	 *
+	 * Including the `angular-mocks.js` file automatically adds the `ngMock` module, so your tests
+	 *  are ready to go!
 	 */
 	angular.module('ngMock', ['ng']).provider({
 	  $browser: angular.mock.$BrowserProvider,
@@ -45426,8 +45595,10 @@
 	 * Fake HTTP backend implementation suitable for end-to-end testing or backend-less development of
 	 * applications that use the {@link ng.$http $http service}.
 	 *
-	 * *Note*: For fake http backend implementation suitable for unit testing please see
+	 * <div class="alert alert-info">
+	 * **Note**: For fake http backend implementation suitable for unit testing please see
 	 * {@link ngMock.$httpBackend unit-testing $httpBackend mock}.
+	 * </div>
 	 *
 	 * This implementation can be used to respond with static or dynamic responses via the `when` api
 	 * and its shortcuts (`whenGET`, `whenPOST`, etc) and optionally pass through requests to the
@@ -45448,9 +45619,9 @@
 	 * on the `ngMockE2E` and your application modules and defines the fake backend:
 	 *
 	 * ```js
-	 *   myAppDev = angular.module('myAppDev', ['myApp', 'ngMockE2E']);
+	 *   var myAppDev = angular.module('myAppDev', ['myApp', 'ngMockE2E']);
 	 *   myAppDev.run(function($httpBackend) {
-	 *     phones = [{name: 'phone1'}, {name: 'phone2'}];
+	 *     var phones = [{name: 'phone1'}, {name: 'phone2'}];
 	 *
 	 *     // returns the current list of phones
 	 *     $httpBackend.whenGET('/phones').respond(phones);
@@ -45461,12 +45632,74 @@
 	 *       phones.push(phone);
 	 *       return [200, phone, {}];
 	 *     });
-	 *     $httpBackend.whenGET(/^\/templates\//).passThrough();
+	 *     $httpBackend.whenGET(/^\/templates\//).passThrough(); // Requests for templare are handled by the real server
 	 *     //...
 	 *   });
 	 * ```
 	 *
 	 * Afterwards, bootstrap your app with this new module.
+	 *
+	 * ## Example
+	 * <example name="httpbackend-e2e-testing" module="myAppE2E" deps="angular-mocks.js">
+	 * <file name="app.js">
+	 *   var myApp = angular.module('myApp', []);
+	 *
+	 *   myApp.controller('main', function($http) {
+	 *     var ctrl = this;
+	 *
+	 *     ctrl.phones = [];
+	 *     ctrl.newPhone = {
+	 *       name: ''
+	 *     };
+	 *
+	 *     ctrl.getPhones = function() {
+	 *       $http.get('/phones').then(function(response) {
+	 *         ctrl.phones = response.data;
+	 *       });
+	 *     };
+	 *
+	 *     ctrl.addPhone = function(phone) {
+	 *       $http.post('/phones', phone).then(function() {
+	 *         ctrl.newPhone = {name: ''};
+	 *         return ctrl.getPhones();
+	 *       });
+	 *     };
+	 *
+	 *     ctrl.getPhones();
+	 *   });
+	 * </file>
+	 * <file name="e2e.js">
+	 *   var myAppDev = angular.module('myAppE2E', ['myApp', 'ngMockE2E']);
+	 *
+	 *   myAppDev.run(function($httpBackend) {
+	 *     var phones = [{name: 'phone1'}, {name: 'phone2'}];
+	 *
+	 *     // returns the current list of phones
+	 *     $httpBackend.whenGET('/phones').respond(phones);
+	 *
+	 *     // adds a new phone to the phones array
+	 *     $httpBackend.whenPOST('/phones').respond(function(method, url, data) {
+	 *       var phone = angular.fromJson(data);
+	 *       phones.push(phone);
+	 *       return [200, phone, {}];
+	 *     });
+	 *   });
+	 * </file>
+	 * <file name="index.html">
+	 *   <div ng-controller="main as $ctrl">
+	 *   <form name="newPhoneForm" ng-submit="$ctrl.addPhone($ctrl.newPhone)">
+	 *     <input type="text" ng-model="$ctrl.newPhone.name">
+	 *     <input type="submit" value="Add Phone">
+	 *   </form>
+	 *   <h1>Phones</h1>
+	 *   <ul>
+	 *     <li ng-repeat="phone in $ctrl.phones">{{phone.name}}</li>
+	 *   </ul>
+	 *   </div>
+	 * </file>
+	 * </example>
+	 *
+	 *
 	 */
 	
 	/**
@@ -46151,7 +46384,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.5.5
+	 * @license AngularJS v1.5.6
 	 * (c) 2010-2016 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -46487,7 +46720,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.5.5
+	 * @license AngularJS v1.5.6
 	 * (c) 2010-2016 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -47269,7 +47502,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.5.5
+	 * @license AngularJS v1.5.6
 	 * (c) 2010-2016 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -47457,7 +47690,7 @@
 	   *   </code></pre>
 	   * </div>
 	   *
-	   * @param {boolean=} regexp New regexp to whitelist urls with.
+	   * @param {boolean=} flag Enable or disable SVG support in the sanitizer.
 	   * @returns {boolean|ng.$sanitizeProvider} Returns the currently configured value if called
 	   *    without an argument or self for chaining otherwise.
 	   */
@@ -47764,7 +47997,7 @@
 	    for (var i = 0, l = attrs.length; i < l; i++) {
 	      var attrNode = attrs[i];
 	      var attrName = attrNode.name.toLowerCase();
-	      if (attrName === 'xmlns:ns1' || attrName.indexOf('ns1:') === 0) {
+	      if (attrName === 'xmlns:ns1' || attrName.lastIndexOf('ns1:', 0) === 0) {
 	        node.removeAttributeNode(attrNode);
 	        i--;
 	        l--;
@@ -52685,7 +52918,7 @@
 	 * angular-ui-bootstrap
 	 * http://angular-ui.github.io/bootstrap/
 	
-	 * Version: 1.3.2 - 2016-04-14
+	 * Version: 1.3.3 - 2016-05-22
 	 * License: MIT
 	 */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.datepicker","ui.bootstrap.position","ui.bootstrap.datepickerPopup","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
 	angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-group.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/year.html","uib/template/datepickerPopup/popup.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
@@ -52917,13 +53150,23 @@
 	    link: function(scope, element, attrs, controller) {
 	      scope.$watch(function() { return controller[attrs.uibAccordionTransclude]; }, function(heading) {
 	        if (heading) {
-	          var elem = angular.element(element[0].querySelector('[uib-accordion-header]'));
+	          var elem = angular.element(element[0].querySelector(getHeaderSelectors()));
 	          elem.html('');
 	          elem.append(heading);
 	        }
 	      });
 	    }
 	  };
+	
+	  function getHeaderSelectors() {
+	      return 'uib-accordion-header,' +
+	          'data-uib-accordion-header,' +
+	          'x-uib-accordion-header,' +
+	          'uib\\:accordion-header,' +
+	          '[uib-accordion-header],' +
+	          '[data-uib-accordion-header],' +
+	          '[x-uib-accordion-header]';
+	  }
 	});
 	
 	angular.module('ui.bootstrap.alert', [])
@@ -53867,8 +54110,9 @@
 	    return date && timezone ? convertTimezoneToLocal(date, timezone, true) : date;
 	  }
 	
-	  //https://github.com/angular/angular.js/blob/4daafd3dbe6a80d578f5a31df1bb99c77559543e/src/Angular.js#L1207
+	  //https://github.com/angular/angular.js/blob/622c42169699ec07fc6daaa19fe6d224e5d2f70e/src/Angular.js#L1207
 	  function timezoneToOffset(timezone, fallback) {
+	    timezone = timezone.replace(/:/g, '');
 	    var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
 	    return isNaN(requestedTimezoneOffset) ? fallback : requestedTimezoneOffset;
 	  }
@@ -53881,8 +54125,9 @@
 	
 	  function convertTimezoneToLocal(date, timezone, reverse) {
 	    reverse = reverse ? -1 : 1;
-	    var timezoneOffset = timezoneToOffset(timezone, date.getTimezoneOffset());
-	    return addDateMinutes(date, reverse * (timezoneOffset - date.getTimezoneOffset()));
+	    var dateTimezoneOffset = date.getTimezoneOffset();
+	    var timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
+	    return addDateMinutes(date, reverse * (timezoneOffset - dateTimezoneOffset));
 	  }
 	}]);
 	
@@ -54154,8 +54399,9 @@
 	      self.activeDate = new Date();
 	    }
 	
-	    this.activeDate = ngModelCtrl.$modelValue ?
-	      dateParser.fromTimezone(new Date(ngModelCtrl.$modelValue), ngModelOptions.timezone) :
+	    var date = ngModelCtrl.$modelValue ? new Date(ngModelCtrl.$modelValue) : new Date();
+	    this.activeDate = !isNaN(date) ?
+	      dateParser.fromTimezone(date, ngModelOptions.timezone) :
 	      dateParser.fromTimezone(new Date(), ngModelOptions.timezone);
 	
 	    ngModelCtrl.$render = function() {
@@ -55360,11 +55606,11 @@
 	          return value;
 	        }
 	
-	        $scope.date = dateParser.fromTimezone(value, timezone);
-	
-	        if (angular.isNumber($scope.date)) {
-	          $scope.date = new Date($scope.date);
+	        if (angular.isNumber(value)) {
+	          value = new Date(value);
 	        }
+	
+	        $scope.date = dateParser.fromTimezone(value, timezone);
 	
 	        return dateParser.filter($scope.date, dateFormat);
 	      });
@@ -55900,7 +56146,8 @@
 	    if (appendTo && self.dropdownMenu) {
 	      var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
 	        css,
-	        rightalign;
+	        rightalign,
+	        scrollbarWidth;
 	
 	      css = {
 	        top: pos.top + 'px',
@@ -55913,7 +56160,8 @@
 	        css.right = 'auto';
 	      } else {
 	        css.left = 'auto';
-	        css.right = window.innerWidth -
+	        scrollbarWidth = $position.scrollbarWidth(true);
+	        css.right = window.innerWidth - scrollbarWidth -
 	          (pos.left + $element.prop('offsetWidth')) + 'px';
 	      }
 	
@@ -56800,29 +57048,26 @@
 	                //controllers
 	                if (modalOptions.controller) {
 	                  ctrlLocals.$scope = modalScope;
+	                  ctrlLocals.$scope.$resolve = {};
 	                  ctrlLocals.$uibModalInstance = modalInstance;
 	                  angular.forEach(tplAndVars[1], function(value, key) {
 	                    ctrlLocals[key] = value;
+	                    ctrlLocals.$scope.$resolve[key] = value;
 	                  });
 	
 	                  // the third param will make the controller instantiate later,private api
 	                  // @see https://github.com/angular/angular.js/blob/master/src/ng/controller.js#L126
-	                  ctrlInstantiate = $controller(modalOptions.controller, ctrlLocals, true);
-	                  if (modalOptions.controllerAs) {
+	                  ctrlInstantiate = $controller(modalOptions.controller, ctrlLocals, true, modalOptions.controllerAs);
+	                  if (modalOptions.controllerAs && modalOptions.bindToController) {
 	                    ctrlInstance = ctrlInstantiate.instance;
-	
-	                    if (modalOptions.bindToController) {
-	                      ctrlInstance.$close = modalScope.$close;
-	                      ctrlInstance.$dismiss = modalScope.$dismiss;
-	                      angular.extend(ctrlInstance, providedScope);
-	                    }
-	
-	                    ctrlInstance = ctrlInstantiate();
-	
-	                    modalScope[modalOptions.controllerAs] = ctrlInstance;
-	                  } else {
-	                    ctrlInstance = ctrlInstantiate();
+	                    ctrlInstance.$close = modalScope.$close;
+	                    ctrlInstance.$dismiss = modalScope.$dismiss;
+	                    angular.extend(ctrlInstance, {
+	                      $resolve: ctrlLocals.$scope.$resolve
+	                    }, providedScope);
 	                  }
+	
+	                  ctrlInstance = ctrlInstantiate();
 	
 	                  if (angular.isFunction(ctrlInstance.$onInit)) {
 	                    ctrlInstance.$onInit();
@@ -58128,7 +58373,8 @@
 	      var previousSelected = ctrl.tabs[previousIndex];
 	      if (previousSelected) {
 	        previousSelected.tab.onDeselect({
-	          $event: evt
+	          $event: evt,
+	          $selectedIndex: index
 	        });
 	        if (evt && evt.isDefaultPrevented()) {
 	          return;
@@ -58144,7 +58390,7 @@
 	        selected.tab.active = true;
 	        ctrl.active = selected.index;
 	        oldIndex = selected.index;
-	      } else if (!selected && angular.isNumber(oldIndex)) {
+	      } else if (!selected && angular.isDefined(oldIndex)) {
 	        ctrl.active = null;
 	        oldIndex = null;
 	      }
@@ -58168,7 +58414,7 @@
 	      return 0;
 	    });
 	
-	    if (tab.index === ctrl.active || !angular.isNumber(ctrl.active) && ctrl.tabs.length === 1) {
+	    if (tab.index === ctrl.active || !angular.isDefined(ctrl.active) && ctrl.tabs.length === 1) {
 	      var newActiveIndex = findTabIndex(tab.index);
 	      ctrl.select(newActiveIndex);
 	    }
@@ -58193,7 +58439,7 @@
 	  };
 	
 	  $scope.$watch('tabset.active', function(val) {
-	    if (angular.isNumber(val) && val !== oldIndex) {
+	    if (angular.isDefined(val) && val !== oldIndex) {
 	      ctrl.select(findTabIndex(val));
 	    }
 	  });
@@ -58231,9 +58477,6 @@
 	        scope.$parent.$eval(attrs.vertical) : false;
 	      scope.justified = angular.isDefined(attrs.justified) ?
 	        scope.$parent.$eval(attrs.justified) : false;
-	      if (angular.isUndefined(attrs.active)) {
-	        scope.active = 0;
-	      }
 	    }
 	  };
 	})
@@ -58964,7 +59207,7 @@
 	    originalScope.$watch(attrs.typeaheadMinLength, function (newVal) {
 	        minLength = !newVal && newVal !== 0 ? 1 : newVal;
 	    });
-	    
+	
 	    //minimal wait time after last character typed before typeahead kicks-in
 	    var waitTime = originalScope.$eval(attrs.typeaheadWaitMs) || 0;
 	
@@ -58976,6 +59219,12 @@
 	
 	    //binding to a variable that indicates if matches are being retrieved asynchronously
 	    var isLoadingSetter = $parse(attrs.typeaheadLoading).assign || angular.noop;
+	
+	    //a function to determine if an event should cause selection
+	    var isSelectEvent = attrs.typeaheadShouldSelect ? $parse(attrs.typeaheadShouldSelect) : function(scope, vals) {
+	      var evt = vals.$event;
+	      return evt.which === 13 || evt.which === 9;
+	    };
 	
 	    //a callback executed when a match is selected
 	    var onSelectCallback = $parse(attrs.typeaheadOnSelect);
@@ -59292,13 +59541,15 @@
 	        return;
 	      }
 	
+	      var shouldSelect = isSelectEvent(originalScope, {$event: evt});
+	
 	      /**
 	       * if there's nothing selected (i.e. focusFirst) and enter or tab is hit
 	       * or
 	       * shift + tab is pressed to bring focus to the previous element
 	       * then clear the results
 	       */
-	      if (scope.activeIdx === -1 && (evt.which === 9 || evt.which === 13) || evt.which === 9 && !!evt.shiftKey) {
+	      if (scope.activeIdx === -1 && shouldSelect || evt.which === 9 && !!evt.shiftKey) {
 	        resetMatches();
 	        scope.$digest();
 	        return;
@@ -59307,36 +59558,36 @@
 	      evt.preventDefault();
 	      var target;
 	      switch (evt.which) {
-	        case 9:
-	        case 13:
-	          scope.$apply(function () {
-	            if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
-	              $$debounce(function() {
-	                scope.select(scope.activeIdx, evt);
-	              }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
-	            } else {
-	              scope.select(scope.activeIdx, evt);
-	            }
-	          });
-	          break;
-	        case 27:
+	        case 27: // escape
 	          evt.stopPropagation();
 	
 	          resetMatches();
 	          originalScope.$digest();
 	          break;
-	        case 38:
+	        case 38: // up arrow
 	          scope.activeIdx = (scope.activeIdx > 0 ? scope.activeIdx : scope.matches.length) - 1;
 	          scope.$digest();
 	          target = popUpEl.find('li')[scope.activeIdx];
 	          target.parentNode.scrollTop = target.offsetTop;
 	          break;
-	        case 40:
+	        case 40: // down arrow
 	          scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
 	          scope.$digest();
 	          target = popUpEl.find('li')[scope.activeIdx];
 	          target.parentNode.scrollTop = target.offsetTop;
 	          break;
+	        default:
+	          if (shouldSelect) {
+	            scope.$apply(function() {
+	              if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
+	                $$debounce(function() {
+	                  scope.select(scope.activeIdx, evt);
+	                }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
+	              } else {
+	                scope.select(scope.activeIdx, evt);
+	              }
+	            });
+	          }
 	      }
 	    });
 	
@@ -74197,7 +74448,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: 'futura_bkbook';\n  src: url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.eot\");\n  src: url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.eot?#iefix\") format(\"embedded-opentype\"), url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.woff\") format(\"woff\"), url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.ttf\") format(\"truetype\"), url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.svg#futura_bkbook\") format(\"svg\");\n  font-weight: normal;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'open_sans_hebrewregular';\n  src: url(\"/meanStarter/assets/fonts/opensanshebrew-regular.eot\");\n  src: url(\"/meanStarter/assets/fonts/opensanshebrew-regular.eot?#iefix\") format(\"embedded-opentype\"), url(\"/meanStarter/assets/fonts/opensanshebrew-regular.woff\") format(\"woff\"), url(\"/meanStarter/assets/fonts/opensanshebrew-regular.ttf\") format(\"truetype\"), url(\"/meanStarter/assets/fonts/opensanshebrew-regular.svg#open_sans_hebrewregular\") format(\"svg\");\n  font-weight: bold;\n  font-style: normal;\n}\n.welcome.container-fluid {\n  margin: 18px;\n  padding-top: 10px;\n  background-color: #fff;\n  color: #525252;\n}\n.welcome .info, .welcome .featured {\n  float: left;\n}\n.welcome .row {\n  margin-top: 10px;\n  background-color: #f3f3f3;\n}\n.welcome .first {\n  padding: 0;\n  margin-bottom: 30px;\n  font-size: 22px;\n  background-color: #fff;\n}\n.welcome {\n  padding-bottom: 4px;\n  /*font-family: \"futura_bkbook\";*/\n  font-family: \"open_sans_hebrewregular\";\n  font-size: 16px;\n  margin: 0;\n  margin: 10px;\n}\n.welcome .info {\n  margin-top: 10px;\n  background-color: #fff;\n  padding-bottom: 10px;\n}\n.welcome h1 {\n  font-size: 30px;\n  text-transform: uppercase;\n  color: #0e0e0e;\n}\n.welcome h2 {\n  margin-top: 27px;\n  font-size: 30px;\n  font-weight: 300;\n}\n.featured-packages h2 {\n  margin-top: 0;\n}\n.welcome h3 {\n  font-size: 17px;\n  /*  font-weight:300; */\n  text-transform: uppercase;\n  color: #0e0e0e;\n}\n.docs h3 {\n  padding: 10px;\n}\n.welcome .packages, .welcome .community, .welcome .featured-packages {\n  clear: both;\n  margin-top: 80px;\n  height: 100%;\n  border-top: 3px solid #f3f3f3;\n}\n.welcome .packages h3 {\n  margin: 20px 0 20px 0;\n}\n\n/* Docs */\n\n.welcome .info ul {\n  padding-left: 20px;\n  width: 220px;\n  list-style: none;\n}\n.welcome .info ul li {\n  width: 100px;\n  font-size: 14px;\n}\n.welcome .info ul li:before {\n  content: '>';\n  margin: 0 0.6em 0 -1em;\n}\n.welcome p {\n  font-size: 12px;\n  margin-top: 10px;\n  margin-left: 53px;\n}\n.welcome .info .docs {\n  height: 100%;\n}\n.welcome .info .docs p {\n  font-size: 14px;\n}\n.docs-desc {\n  float: left;\n}\n.docs-link {\n  margin: 16px 0 0 0;\n  float: left;\n  width: 120px;\n}\n.docs-link.first {\n  margin: 16px 0 0 53px;\n}\n.morelink {\n  margin: 16px 0 6px 0;\n  clear: both;\n  float: right;\n}\n.docs .morelink {\n  margin-top: 30px;\n}\n.morelink:before {\n  text-transform: uppercase;\n  content: '>';\n  margin: 0 0.5em 0 -1em;\n}\n\n/* Packages */\n\n.packages .package {\n  float: left;\n  width: 200px;\n  margin-right: 40px;\n}\n\n/* Packages */\n\n.packages .package h4, .community .package h4 {\n  text-transform: uppercase;\n  margin-left: 53px;\n  color: #176583;\n  font-size: 16px;\n}\n.packages .package p {\n  margin-left: 53px;\n}\n\n/* Community */\n\n.welcome-sprite {\n  float: left;\n  width: 53px;\n  height: 53px;\n}\n.welcome-sprite {\n  background-image: url(\"/meanStarter/assets/img/welcome_sprite.png\");\n  background-repeat: no-repeat;\n  display: block;\n}\n.docs .welcome-sprite {\n  background-position: 0 -7px;\n}\n.packages .welcome-sprite {\n  background-position: -60px 0;\n}\n.community .welcome-sprite {\n  background-position: -120px 0;\n}\n.community .package {\n  float: left;\n  margin-bottom: 10px;\n}\n.community .package p {\n  width: 190px;\n  margin: 0 0 0 10px;\n}\n.community .package h4 {\n  margin: 0 0 0 10px;\n}\n.socialsprite {\n  background-image: url(\"/meanStarter/assets/img/welcome_social.png\");\n  background-repeat: no-repeat;\n  display: block;\n  float: left;\n}\n.sprite-facebook {\n  width: 39px;\n  height: 42px;\n  background-position: -5px -5px;\n}\n.sprite-github {\n  width: 40px;\n  height: 44px;\n  background-position: -54px -5px;\n}\n.sprite-irc {\n  width: 38px;\n  height: 42px;\n  background-position: -104px -5px;\n}\n.sprite-stackoverflow {\n  width: 40px;\n  height: 44px;\n  background-position: -152px -5px;\n}\n\n/* Featured Pic */\n\n.featuredpic img {\n  width: 510px;\n}\n.welcome .community h3 {\n  margin-bottom: 40px;\n}\n\n/* Featured Sites */\n\n.featured-sites h4 {\n  font-size: 24px;\n}\n.featured-sites h4 span {\n  font-size: 14px;\n}\n.featured-sites p, .featured-packages p {\n  font-size: 14px;\n  margin-left: 0;\n}\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: 'futura_bkbook';\n  src: url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.eot\");\n  src: url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.eot?#iefix\") format(\"embedded-opentype\"), url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.woff\") format(\"woff\"), url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.ttf\") format(\"truetype\"), url(\"/meanStarter/assets/fonts/ufonts.com_futura-book.svg#futura_bkbook\") format(\"svg\");\n  font-weight: normal;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'open_sans_hebrewregular';\n  src: url(\"/meanStarter/assets/fonts/opensanshebrew-regular.eot\");\n  src: url(\"/meanStarter/assets/fonts/opensanshebrew-regular.eot?#iefix\") format(\"embedded-opentype\"), url(\"/meanStarter/assets/fonts/opensanshebrew-regular.woff\") format(\"woff\"), url(\"/meanStarter/assets/fonts/opensanshebrew-regular.ttf\") format(\"truetype\"), url(\"/meanStarter/assets/fonts/opensanshebrew-regular.svg#open_sans_hebrewregular\") format(\"svg\");\n  font-weight: bold;\n  font-style: normal;\n}\n.mgb-15{\n    margin-bottom: 15px;\n}\ndl {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.cs-bkcolor-o{\n    background-color: #ffb362!important;\n}\n.list-contents-title a{\n    color: #333;\n    /*color: #39a4ca;*/\n}\n.section-title{\n    font-weight: 700;\n}\n.list-content{\n    border-bottom: 1px solid #D4D4D4;\n    padding: 8px 6px;\n}\n.list-contents-box{\n    /*margin-bottom: 7px;*/\n    /*border-bottom: 1px solid #D4D4D4;*/\n    /*padding: 8px 6px;*/\n    margin-bottom: 30px;\n}\n.list-contents-title{\n    font-size: 18px;\n}\n.list-contents-info{\n    font-size: 16px;\n}\n.list-content dd a{\n    font-size: 16px;\n    font-weight: 800;\n}\n.welcome.container-fluid {\n  margin: 18px;\n  padding-top: 10px;\n  background-color: #fff;\n  color: #525252;\n}\n.welcome .info, .welcome .featured {\n  float: left;\n}\n.welcome .row {\n  margin-top: 10px;\n  background-color: #f3f3f3;\n}\n.welcome .first {\n  padding: 0;\n  margin-bottom: 30px;\n  font-size: 22px;\n  background-color: #fff;\n}\n.welcome {\n  padding-bottom: 4px;\n  /*font-family: \"futura_bkbook\";*/\n  font-family: \"open_sans_hebrewregular\";\n  font-size: 16px;\n  margin: 0;\n  margin: 10px;\n}\n.welcome .info {\n  margin-top: 10px;\n  background-color: #fff;\n  padding-bottom: 10px;\n}\n.welcome h1 {\n  font-size: 30px;\n  text-transform: uppercase;\n  color: #0e0e0e;\n}\n.welcome h2 {\n  margin-top: 27px;\n  font-size: 30px;\n  font-weight: 300;\n}\n.featured-packages h2 {\n  margin-top: 0;\n}\n.welcome h3 {\n  font-size: 17px;\n  /*  font-weight:300; */\n  text-transform: uppercase;\n  color: #0e0e0e;\n}\n.docs h3 {\n  padding: 10px;\n}\n.welcome .packages, .welcome .community, .welcome .featured-packages {\n  clear: both;\n  margin-top: 80px;\n  height: 100%;\n  border-top: 3px solid #f3f3f3;\n}\n.welcome .packages h3 {\n  margin: 20px 0 20px 0;\n}\n\n/* Docs */\n\n.welcome .info ul {\n  padding-left: 20px;\n  width: 220px;\n  list-style: none;\n}\n.welcome .info ul li {\n  width: 100px;\n  font-size: 14px;\n}\n.welcome .info ul li:before {\n  content: '>';\n  margin: 0 0.6em 0 -1em;\n}\n.welcome p {\n  font-size: 12px;\n  margin-top: 10px;\n  margin-left: 53px;\n}\n.welcome .info .docs {\n  height: 100%;\n}\n.welcome .info .docs p {\n  font-size: 14px;\n}\n.docs-desc {\n  float: left;\n}\n.docs-link {\n  margin: 16px 0 0 0;\n  float: left;\n  width: 120px;\n}\n.docs-link.first {\n  margin: 16px 0 0 53px;\n}\n.morelink {\n  margin: 16px 0 6px 0;\n  clear: both;\n  float: right;\n}\n.docs .morelink {\n  margin-top: 30px;\n}\n.morelink:before {\n  text-transform: uppercase;\n  content: '>';\n  margin: 0 0.5em 0 -1em;\n}\n\n/* Packages */\n\n.packages .package {\n  float: left;\n  width: 200px;\n  margin-right: 40px;\n}\n\n/* Packages */\n\n.packages .package h4, .community .package h4 {\n  text-transform: uppercase;\n  margin-left: 53px;\n  color: #176583;\n  font-size: 16px;\n}\n.packages .package p {\n  margin-left: 53px;\n}\n\n/* Community */\n\n.welcome-sprite {\n  float: left;\n  width: 53px;\n  height: 53px;\n}\n.welcome-sprite {\n  background-image: url(\"/meanStarter/assets/img/welcome_sprite.png\");\n  background-repeat: no-repeat;\n  display: block;\n}\n.docs .welcome-sprite {\n  background-position: 0 -7px;\n}\n.packages .welcome-sprite {\n  background-position: -60px 0;\n}\n.community .welcome-sprite {\n  background-position: -120px 0;\n}\n.community .package {\n  float: left;\n  margin-bottom: 10px;\n}\n.community .package p {\n  width: 190px;\n  margin: 0 0 0 10px;\n}\n.community .package h4 {\n  margin: 0 0 0 10px;\n}\n.socialsprite {\n  background-image: url(\"/meanStarter/assets/img/welcome_social.png\");\n  background-repeat: no-repeat;\n  display: block;\n  float: left;\n}\n.sprite-facebook {\n  width: 39px;\n  height: 42px;\n  background-position: -5px -5px;\n}\n.sprite-github {\n  width: 40px;\n  height: 44px;\n  background-position: -54px -5px;\n}\n.sprite-irc {\n  width: 38px;\n  height: 42px;\n  background-position: -104px -5px;\n}\n.sprite-stackoverflow {\n  width: 40px;\n  height: 44px;\n  background-position: -152px -5px;\n}\n\n/* Featured Pic */\n\n.featuredpic img {\n  width: 510px;\n}\n.welcome .community h3 {\n  margin-bottom: 40px;\n}\n\n/* Featured Sites */\n\n.featured-sites h4 {\n  font-size: 24px;\n}\n.featured-sites h4 span {\n  font-size: 14px;\n}\n.featured-sites p, .featured-packages p {\n  font-size: 14px;\n  margin-left: 0;\n}\n", ""]);
 	
 	// exports
 

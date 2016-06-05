@@ -12,6 +12,43 @@
   font-weight: bold;
   font-style: normal;
 }
+.mgb-15{
+    margin-bottom: 15px;
+}
+dl {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.cs-bkcolor-o{
+    background-color: #ffb362!important;
+}
+.list-contents-title a{
+    color: #333;
+    /*color: #39a4ca;*/
+}
+.section-title{
+    font-weight: 700;
+}
+.list-content{
+    border-bottom: 1px solid #D4D4D4;
+    padding: 8px 6px;
+}
+.list-contents-box{
+    /*margin-bottom: 7px;*/
+    /*border-bottom: 1px solid #D4D4D4;*/
+    /*padding: 8px 6px;*/
+    margin-bottom: 30px;
+}
+.list-contents-title{
+    font-size: 18px;
+}
+.list-contents-info{
+    font-size: 16px;
+}
+.list-content dd a{
+    font-size: 16px;
+    font-weight: 800;
+}
 .welcome.container-fluid {
   margin: 18px;
   padding-top: 10px;
