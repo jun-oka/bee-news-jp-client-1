@@ -12,12 +12,22 @@
   font-weight: bold;
   font-style: normal;
 }
+.navbar-header{
+    width:100%!important;
+}
 .navbar-inverse{
     background-color: #ffb362!important;
-    border-color: #ffb362!important;
+    border-color: transparent!important;
+}
+.navbar-inverse .navbar-form {
+    border-color: transparent!important;
 }
 .navbar-inverse .navbar-brand{
     color: white!important;
+}
+.nav-description{
+    line-height: 48px;
+    color:black;
 }
 .mgb-15{
     margin-bottom: 15px;
@@ -61,7 +71,12 @@ dl {
 .list-content dd a{
     font-size: 16px;
     font-weight: 800;
-    color: #39a4ca!important;
+    color: #4d94db!important;
+}
+.list-content a{
+    font-size: 16px;
+    font-weight: 800;
+    color: #4d94db!important;
 }
 .side-bar{
     width:23%;
@@ -280,4 +295,10 @@ dl {
 .featured-sites p, .featured-packages p {
   font-size: 14px;
   margin-left: 0;
+}
+
+@media (min-width: 768px){
+    .nav-description{
+    font-size: 11px;
+    }
 }
