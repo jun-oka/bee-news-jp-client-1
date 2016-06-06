@@ -12,6 +12,13 @@
   font-weight: bold;
   font-style: normal;
 }
+.navbar-inverse{
+    background-color: #ffb362!important;
+    border-color: #ffb362!important;
+}
+.navbar-inverse .navbar-brand{
+    color: white!important;
+}
 .mgb-15{
     margin-bottom: 15px;
 }
@@ -54,6 +61,7 @@ dl {
 .list-content dd a{
     font-size: 16px;
     font-weight: 800;
+    color: #39a4ca!important;
 }
 .side-bar{
     width:23%;
