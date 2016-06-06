@@ -2,11 +2,9 @@
 
     <div class="row">
         <div class="col-sm-9">
-
-            <!--End mc_embed_signup-->
             <div class="row">
                 <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">掲示板・コミュニティサイト</h3>
+                    <h3 class="section-title">| 掲示板・コミュニティサイト</h3>
                 </div>
                 <div class="col-md-12">
                     <dl style="padding: 5px;">
@@ -21,7 +19,6 @@
                         </div>
                     </dl>
                 </div>
-
                 <div class="col-md-12">
                     <dl style="padding: 5px;">
                         <div class="list-contents-box" style="">
@@ -35,7 +32,6 @@
                         </div>
                     </dl>
                 </div>
-
                 <div class="col-md-12">
                     <dl style="padding: 5px;">
                         <div ng-repeat="bbs in bbss" class="list-contents-box" style="">
@@ -50,11 +46,9 @@
                     </dl>
                 </div>
             </div>
-
-            <!--End mc_embed_signup-->
             <div class="row">
                 <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">ブログ</h3>
+                    <h3 class="section-title">| ブログ</h3>
                 </div>
                 <div class="col-md-12">
                     <dl style="padding: 5px;">
@@ -70,10 +64,9 @@
                     </dl>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">ニュース</h3>
+                    <h3 class="section-title">| ニュース</h3>
                 </div>
                 <div class="col-md-12">
                     <dl style="padding: 5px;">
@@ -89,15 +82,14 @@
                     </dl>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">捕獲情報</h3>
+                    <h3 class="section-title">| 捕獲情報</h3>
                 </div>
                 <div class="col-md-12">
                     <dl style="padding: 5px;">
                         <div class="list-contents-box" style="">
-                            <dt class="list-contents-title"><a href="{{map.site_url}}" target="_blank">{{news.name}}</a></dt>
+                            <dt class="list-contents-title"><a href="{{map.site_url}}" target="_blank">{{map.name}}</a></dt>
                             <div ng-if="map.items.length === 0">
                                 <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
                             </div>
@@ -108,10 +100,9 @@
                     </dl>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="section-title">Facebook</h3>
+                    <h3 class="section-title">| Facebook</h3>
                 </div>
                 <div class="col-md-12">
                     <dl style="padding: 5px;">
@@ -120,9 +111,41 @@
                             <div ng-if="page.items.length === 0">
                                 <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
                             </div>
-                            <div ng-repeat="item in page.items" class="list-unstyled" >
-                                <img src="{{ item.image}}">
-                                <dd>[{{ moment(item.time * 1000).fromNow() }}]<a href="{{ item.url }}" target="_blank">{{ item.title }}</a></dd>
+                            <div ng-repeat="item in page.items" class="list-unstyled list-content" >
+                                <div class="media-left">
+                                    <a href="{{ item.url }}"><img class="media-object" src="{{item.image}}" alt="" width="200"></a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading"><a href="{{ item.url }}">{{ item.title }}</a></div>
+                                    <div>[{{ moment(item.time * 1000).fromNow() }}]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="section-title">| YouTube</h3>
+                </div>
+                <div class="col-md-12">
+                    <dl style="padding: 5px;">
+                        <div class="list-contents-box" style="">
+                            <!--<dt class="list-contents-title"><a href="{{page.site_url}}" target="_blank">{{page.name}}</a></dt>-->
+                            <!--<div ng-if="page.items.length === 0">-->
+                                <!--<dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>-->
+                            <!--</div>-->
+                            <div ng-repeat="item in youtube" class="list-unstyled list-content" >
+                                <div class="media-left">
+                                    <a href="{{ item.url }}">
+                                        <img class="media-object" src="{{ item.image}}" alt="{{ item.title }}" width="200">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                        <div class="media-heading"><a href="{{ item.url }}">{{ item.title }}</a></div>
+                                        <div>[{{ moment(item.time * 1000).fromNow() }}]</div>
+                                </div>
                             </div>
                         </div>
                     </dl>
@@ -132,12 +155,10 @@
 
         <div class="col-sm-3">
             <div class="row side-bar affix">
-
                 <!--<div class="col-md-12">-->
                   <!--<p>ニホンミツバチの最新情報は、ニホンミツバチについてのブログ、掲示板などの最新投稿を自動的に収集するサイトです。日々の情報収集にお役立てください。</p>-->
                   <!--<p>追加してほしいブログや掲示板があれば、<a href="mailto:syumatsu@beekeep.sakura.ne.jp?subject=ニホンミツバチ最新情報お問い合わせ">メール</a>にてお問い合わせください。</p>-->
                 <!--</div>-->
-
                 <div class="col-sm-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -174,15 +195,4 @@
             </div>
         </div>
     </div>
-
-    <!--<h2>YouTube</h2>-->
-    <!--<section class="welcome container-fluid">-->
-    <!--<ul ng-repeat="item in youtube">-->
-        <!--[{{ moment(item.time * 1000).fromNow() }}] <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>-->
-        <!--<a href="{{ item.url }}" target="_blank">-->
-            <!--<img src="{{ item.image }}">-->
-        <!--</a>-->
-    <!--</ul>-->
-    <!--</section>-->
-
 </div>
