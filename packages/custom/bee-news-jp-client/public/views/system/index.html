@@ -1,229 +1,226 @@
 <div ng-controller="IndexController" class="">
 
+<div class="row">
+<div class="col-sm-9">
     <div class="row">
-        <div class="col-sm-9">
-            <div class="row">
-                <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">| 掲示板・コミュニティサイト</h3>
-                </div>
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <dl style="padding: 5px;">
-                                <div class="list-contents-box" style="">
-                                    <dt class="list-contents-title"><a href="{{qa.site_url}}" target="_blank">{{qa.name}}</a></dt>
-                                    <div ng-if="qa.items.length === 0">
-                                        <dd class="list-contentsl-info list-unstyled list-content">3日以内の投稿はありません。</dd>
-                                    </div>
-                                    <div ng-repeat="item in qa.items" class="list-unstyled list-content" >
-                                        <dd ><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
-                                    </div>
-                                </div>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <dl style="padding: 5px;">
-                                <div class="list-contents-box" style="">
-                                    <dt class="list-contents-title"><a href="{{chiebukuro.site_url}}" target="_blank">{{chiebukuro.name}}</a></dt>
-                                    <div ng-if="chiebukuro.items.length === 0" class="list-content">
-                                        <dd class="list-contentsl-info list-unstyled ">3日以内の投稿はありません。</dd>
-                                    </div>
-                                    <div ng-repeat="item in chiebukuro.items" class="list-unstyled list-content" >
-                                        <dd><a href="{{ chiebukuro.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
-                                    </div>
-                                </div>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <dl style="padding: 5px;">
-                        <div ng-repeat="bbs in bbss" class="list-contents-box" style="">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <dt class="list-contents-title"><a href="{{bbs.site_url}}" target="_blank">{{bbs.name}}</a></dt>
-                                    <div ng-if="bbs.items.length === 0" class="">
-                                        <dd class="list-contentsl-info list-unstyled ">3日以内の投稿はありません。</dd>
-                                    </div>
-                                    <div ng-repeat="item in bbs.items" class="list-unstyled list-content" >
-                                        <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">| ブログ</h3>
-                </div>
-                <div class="col-sm-12">
-                    <dl style="padding: 5px;">
-                        <div ng-repeat="blog in blogs" class="list-contents-box" style="">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <dt class="list-contents-title"><a href="{{ blog.site_url}}" target="_blank">{{blog.name}}</a></dt>
-                                    <div ng-if="blog.items.length === 0" class="">
-                                        <dd class="list-contentsl-info list-unstyled list-content">3日以内の投稿はありません。</dd>
-                                    </div>
-                                    <div ng-repeat="item in blog.items" class="list-unstyled list-content" >
-                                        <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">| ニュース</h3>
-                </div>
-                <div class="col-sm-12">
+        <div class="col-sm-12 mgb-15">
+            <h3 class="section-title">| 掲示板・コミュニティサイト</h3>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
                     <dl style="padding: 5px;">
                         <div class="list-contents-box" style="">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <dt class="list-contents-title"><a href="{{news.site_url}}" target="_blank">{{news.name}}</a></dt>
-                                    <div ng-if="news.items.length === 0">
-                                        <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
-                                    </div>
-                                    <div ng-repeat="item in news.items" class="list-unstyled list-content" >
-                                        <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
-                                    </div>
-                                </div>
+                            <dt class="list-contents-title"><a href="{{qa.site_url}}" target="_blank">{{qa.name}}</a></dt>
+                            <div ng-if="qa.items.length === 0">
+                                <dd class="list-contentsl-info list-unstyled list-content">3日以内の投稿はありません。</dd>
                             </div>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 mgb-15">
-                    <h3 class="section-title">| 捕獲情報</h3>
-                </div>
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <dl style="padding: 5px;">
-                                <div class="list-contents-box" style="">
-                                    <dt class="list-contents-title"><a href="{{map.site_url}}" target="_blank">{{map.name}}</a></dt>
-                                    <div ng-if="map.items.length === 0">
-                                        <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
-                                    </div>
-                                    <div ng-repeat="item in map.items" class="list-unstyled list-content" >
-                                        <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
-                                    </div>
-                                </div>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="section-title">| Facebook</h3>
-                </div>
-                <div class="col-sm-12">
-                    <dl style="padding: 5px;">
-                        <div ng-repeat="page in facebookPages" class="list-contents-box" style="">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <dt class="list-contents-title"><a href="{{page.site_url}}" target="_blank">{{page.name}}</a></dt>
-                                    <div ng-if="page.items.length === 0">
-                                        <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
-                                    </div>
-                                    <div ng-repeat="item in page.items" class="list-unstyled list-content" >
-                                        <div class="media-left">
-                                            <a href="{{ item.url }}"><img class="media-object" src="{{item.image}}" alt="" width="200"></a>
-                                        </div>
-                                        <div class="media-body">
-                                            <div class="media-heading"><a href="{{ item.url }}">{{ item.title }}</a></div>
-                                            <div>[{{ moment(item.time * 1000).fromNow() }}]</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="section-title">| YouTube</h3>
-                </div>
-                <div class="col-sm-12">
-                    <dl style="padding: 5px;">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="list-contents-box" style="">
-                                    <!--<dt class="list-contents-title"><a href="{{page.site_url}}" target="_blank">{{page.name}}</a></dt>-->
-                                    <!--<div ng-if="page.items.length === 0">-->
-                                        <!--<dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>-->
-                                    <!--</div>-->
-                                    <div ng-repeat="item in youtube" class="list-unstyled list-content" >
-                                        <div class="media-left">
-                                            <a href="{{ item.url }}">
-                                                <img class="media-object" src="{{ item.image}}" alt="{{ item.title }}" width="200">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                                <div class="media-heading"><a href="{{ item.url }}">{{ item.title }}</a></div>
-                                                <div>[{{ moment(item.time * 1000).fromNow() }}]</div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div ng-repeat="item in qa.items" class="list-unstyled list-content" >
+                                <dd ><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
                             </div>
                         </div>
                     </dl>
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
-            <div class="row side-bar affix">
-                <!--<div class="col-md-12">-->
-                  <!--<p>ニホンミツバチの最新情報は、ニホンミツバチについてのブログ、掲示板などの最新投稿を自動的に収集するサイトです。日々の情報収集にお役立てください。</p>-->
-                  <!--<p>追加してほしいブログや掲示板があれば、<a href="mailto:syumatsu@beekeep.sakura.ne.jp?subject=ニホンミツバチ最新情報お問い合わせ">メール</a>にてお問い合わせください。</p>-->
-                <!--</div>-->
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">メルマガ登録</h3>
-                        </div>
-                        <div class="panel-body">
-                            <p>毎朝最新情報をメールでお届けします</p>
-                            <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-                            <style type="text/css">
-                                #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
-                                /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
-                                   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
-                            </style>
-                            <div id="mc_embed_signup">
-                                <form action="//mitsubachi-map.us12.list-manage.com/subscribe/post?u=129bdb4c16618e335a63a2d58&amp;id=abe690c9cf" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-                                    <div id="mc_embed_signup_scroll">
-
-                                        <div class="mc-field-group">
-                                            <label for="mce-EMAIL">メールアドレス </label>
-                                            <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
-                                        </div>
-                                        <div id="mce-responses" class="clear">
-                                            <div class="response" id="mce-error-response" style="display:none"></div>
-                                            <div class="response" id="mce-success-response" style="display:none"></div>
-                                        </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                                        <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_129bdb4c16618e335a63a2d58_abe690c9cf" tabindex="-1" value=""></div>
-                                        <div class="clear"><input style="background-color: #ffb362!important;" type="submit" value="無料登録" name="subscribe" id="mc-embedded-subscribe" class="button cs-bkcolor-o"></div>
-                                    </div>
-                                </form>
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <dl style="padding: 5px;">
+                        <div class="list-contents-box" style="">
+                            <dt class="list-contents-title"><a href="{{chiebukuro.site_url}}" target="_blank">{{chiebukuro.name}}</a></dt>
+                            <div ng-if="chiebukuro.items.length === 0" class="list-content">
+                                <dd class="list-contentsl-info list-unstyled ">3日以内の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="item in chiebukuro.items" class="list-unstyled list-content" >
+                                <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
                             </div>
                         </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <dl style="padding: 5px;">
+                <div ng-repeat="bbs in bbss" class="list-contents-box" style="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dt class="list-contents-title"><a href="{{bbs.site_url}}" target="_blank">{{bbs.name}}</a></dt>
+                            <div ng-if="bbs.items.length === 0" class="">
+                                <dd class="list-contentsl-info list-unstyled ">3日以内の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="item in bbs.items" class="list-unstyled list-content" >
+                                <dd><a href="{{item.url}}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 mgb-15">
+            <h3 class="section-title">| ブログ</h3>
+        </div>
+        <div class="col-sm-12">
+            <dl style="padding: 5px;">
+                <div ng-repeat="blog in blogs" class="list-contents-box" style="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dt class="list-contents-title"><a href="{{ blog.site_url}}" target="_blank">{{blog.name}}</a></dt>
+                            <div ng-if="blog.items.length === 0" class="">
+                                <dd class="list-contentsl-info list-unstyled list-content">3日以内の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="item in blog.items" class="list-unstyled list-content" >
+                                <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 mgb-15">
+            <h3 class="section-title">| ニュース</h3>
+        </div>
+        <div class="col-sm-12">
+            <dl style="padding: 5px;">
+                <div class="list-contents-box" style="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dt class="list-contents-title"><a href="{{news.site_url}}" target="_blank">{{news.name}}</a></dt>
+                            <div ng-if="news.items.length === 0">
+                                <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="item in news.items" class="list-unstyled list-content" >
+                                <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 mgb-15">
+            <h3 class="section-title">| 捕獲情報</h3>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <dl style="padding: 5px;">
+                        <div class="list-contents-box" style="">
+                            <dt class="list-contents-title"><a href="{{map.site_url}}" target="_blank">{{map.name}}</a></dt>
+                            <div ng-if="map.items.length === 0">
+                                <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="item in map.items" class="list-unstyled list-content" >
+                                <dd><a href="{{ item.url }}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
+                            </div>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="section-title">| Facebook</h3>
+        </div>
+        <div class="col-sm-12">
+            <dl style="padding: 5px;">
+                <div ng-repeat="page in facebookPages" class="list-contents-box" style="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dt class="list-contents-title"><a href="{{page.site_url}}" target="_blank">{{page.name}}</a></dt>
+                            <div ng-if="page.items.length === 0">
+                                <dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="item in page.items" class="list-unstyled list-content" >
+                                <div class="media-left">
+                                    <a href="{{ item.url }}"><img class="media-object" src="{{item.image}}" alt="" width="200"></a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading"><a href="{{ item.url }}">{{ item.title }}</a></div>
+                                    <div>[{{ moment(item.time * 1000).fromNow() }}]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="section-title">| YouTube</h3>
+        </div>
+        <div class="col-sm-12">
+            <dl style="padding: 5px;">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="list-contents-box" style="">
+                            <!--<dt class="list-contents-title"><a href="{{page.site_url}}" target="_blank">{{page.name}}</a></dt>-->
+                            <!--<div ng-if="page.items.length === 0">-->
+                            <!--<dd class="list-contentsl-info list-unstyled">3日以内の投稿はありません。</dd>-->
+                            <!--</div>-->
+                            <div ng-repeat="item in youtube" class="list-unstyled list-content" >
+                                <div class="media-left">
+                                    <a href="{{ item.url }}">
+                                        <img class="media-object" src="{{ item.image}}" alt="{{ item.title }}" width="200">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading"><a href="{{ item.url }}">{{ item.title }}</a></div>
+                                    <div>[{{ moment(item.time * 1000).fromNow() }}]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="col-sm-3">
+    <div class="row side-bar affix">
+        <!--<div class="col-md-12">-->
+        <!--<p>ニホンミツバチの最新情報は、ニホンミツバチについてのブログ、掲示板などの最新投稿を自動的に収集するサイトです。日々の情報収集にお役立てください。</p>-->
+        <!--<p>追加してほしいブログや掲示板があれば、<a href="mailto:syumatsu@beekeep.sakura.ne.jp?subject=ニホンミツバチ最新情報お問い合わせ">メール</a>にてお問い合わせください。</p>-->
+        <!--</div>-->
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">メルマガ登録</h3>
+                </div>
+                <div class="panel-body">
+                    <p>毎朝最新情報をメールでお届けします</p>
+                    <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
+                    <style type="text/css">
+                        #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
+                        /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+                           We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+                    </style>
+                    <div id="mc_embed_signup">
+                        <form action="//mitsubachi-map.us12.list-manage.com/subscribe/post?u=129bdb4c16618e335a63a2d58&amp;id=abe690c9cf" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                            <div id="mc_embed_signup_scroll">
+
+                                <div class="mc-field-group">
+                                    <label for="mce-EMAIL">メールアドレス </label>
+                                    <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+                                </div>
+                                <div id="mce-responses" class="clear">
+                                    <div class="response" id="mce-error-response" style="display:none"></div>
+                                    <div class="response" id="mce-success-response" style="display:none"></div>
+                                </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_129bdb4c16618e335a63a2d58_abe690c9cf" tabindex="-1" value=""></div>
+                                <div class="clear"><input style="background-color: #ffb362!important;" type="submit" value="無料登録" name="subscribe" id="mc-embedded-subscribe" class="button cs-bkcolor-o"></div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
