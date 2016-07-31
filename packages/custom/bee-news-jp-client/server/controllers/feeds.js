@@ -180,7 +180,7 @@ module.exports = function() {
     findAll: function(req, res) {
         async.parallel([
             function(cb){
-                Eightchannel.find({}, cb);
+                Eightchannel.find({}, cb).limit(5);
             },
             function(cb){
                 Nara.find({}, cb);
