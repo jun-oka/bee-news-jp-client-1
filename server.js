@@ -14,7 +14,27 @@ process.env.NODE_CONFIG_DIR = './config/env';
 var mean = require('meanio');
 var cluster = require('cluster');
 var deferred = require('q').defer();
+var cron = require('node-cron');
+var request = require('request');
+var app = require('express');
 
+// Cron job for scraping
+cron.schedule('0 * * * * *', function(){
+
+    console.log('You will see this message every second');
+    //
+    //app.route('/api/feed');
+    //    .get(feed.test);
+
+    request.get('http://localhost:3000/api/feed/scrape', function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log('っす');
+        } else {
+            console.log('だめ');
+            //console.log('error: '+ response.statusCode);
+        }
+    })
+});
 
 // Code to run if we're in the master process or if we are not in debug mode/ running tests
 

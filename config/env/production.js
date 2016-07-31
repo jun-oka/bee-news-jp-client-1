@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = {
-  db: process.env.MONGODB_URI,
+  db: 'mongodb://localhost/bee-news-jp-tmp',
+  //db: process.env.MONGODB_URI,
   /**
    * Database options that will be passed directly to mongoose.connect
    * Below are some examples.

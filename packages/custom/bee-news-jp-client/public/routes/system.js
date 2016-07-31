@@ -11,6 +11,10 @@ angular.module('mean.meanStarter').config(['$meanStateProvider', '$urlRouterProv
       .state('home', {
         url: '/',
         templateUrl: 'meanStarter/views/system/index.html'
+      })
+      .state('tmp scrape page', {
+          url: '/scrape/',
+         templateUrl: 'meanStarter/views/system/header.html'
       });
   }
 ]).config(['$locationProvider',
