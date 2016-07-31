@@ -48,7 +48,25 @@ angular.module('mean.system')
             $http.jsonp("http://api.bee-news.net/facebook.php?callback=JSON_CALLBACK&day=3").then(function(json) {
               $rootScope.$emit('get-facebook', json.data);
             });
-          }
+          },
+          getFeed: function(){
+            //$http.jsonp("http://localhost:3000/api/feed").then(function(json) {
+            //    $rootScope.$emit('get-feed', json.data);
+            //    console.log('tetete');
+            //});
+              return $http({
+                  method: 'GET',
+                  url: '/api/feed'
+              }).then(function(res) {
+                  console.log(res);
+                  $rootScope.$emit('get-feed', res);
+                  return res;
+              }).catch(function(err) {
+                  return err
+              });
+
+
+            }
         }
       }
 ]);

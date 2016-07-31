@@ -23,7 +23,7 @@
                         <div id="mc_embed_signup_scroll">
 
                             <div class="mc-field-group">
-                                <label for="mce-EMAIL">メールアドレス </label>
+                                <label for="mce-EMAIL">メールアドレス</label>
                                 <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
                             </div>
                             <div id="mce-responses" class="clear">
@@ -91,6 +91,40 @@
                             </div>
                             <div ng-repeat="item in bbs.items" class="list-unstyled list-content" >
                                 <dd><a href="{{bbs.site_url}}" target="_blank">{{ item.title }}</a><br>[{{ moment(item.time * 1000).fromNow() }}]</dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+        </div>
+        <div class="col-sm-12">
+            <dl style="padding: 5px;">
+                <div class="list-contents-box" style="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dt class="list-contents-title"><a href="" target="_blank">井戸端会議</a></dt>
+                                <div  ng-if="feeds.data[0].length === 0" class="">
+                                <dd class="list-contentsl-info list-unstyled ">最近の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="feed in feeds.data[0]" class="list-unstyled list-content" >
+                                <dd><a href="http://honeybee-club.com/cgi/clip/clip.cgi" target="_blank">{{feed.post_number}}{{feed.title}}投稿者 : {{feed.post_name}}</a><br></dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dl>
+        </div>
+        <div class="col-sm-12">
+            <dl style="padding: 5px;">
+                <div class="list-contents-box" style="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <dt class="list-contents-title"><a href="" target="_blank">8ちゃんねる</a></dt>
+                            <div  ng-if="feeds.data[1].length === 0" class="">
+                                <dd class="list-contentsl-info list-unstyled ">3日以内の投稿はありません。</dd>
+                            </div>
+                            <div ng-repeat="feed in feeds.data[1]" class="list-unstyled list-content" >
+                                <dd><a href="http://narasuzume.ryuon.org/protect_1/joyful003/joyful.cgi" target="_blank">{{feed.post_number}}{{feed.title}}投稿者 : {{feed.post_name}}</a><br></dd>
                             </div>
                         </div>
                     </div>
