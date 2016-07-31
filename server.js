@@ -18,20 +18,15 @@ var cron = require('node-cron');
 var request = require('request');
 var app = require('express');
 
-// Cron job for scraping
+// Cron job for scraping every hour
 cron.schedule('0 * * * * *', function(){
 
-    console.log('You will see this message every second');
-    //
-    //app.route('/api/feed');
-    //    .get(feed.test);
-
-    request.get('http://localhost:3000/api/feed/scrape', function(error, response, body) {
+    console.log('You will see this message every hour');
+    request.get('api/feed/scrape', function(error, response, body) {
         if (!error && response.statusCode == 200) {
-            console.log('っす');
+            console.log('ok');
         } else {
-            console.log('だめ');
-            //console.log('error: '+ response.statusCode);
+            console.log('error: '+ response.statusCode);
         }
     })
 });
