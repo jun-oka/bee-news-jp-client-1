@@ -18,11 +18,14 @@ var cron = require('node-cron');
 var request = require('request');
 var app = require('express');
 
+
 // Cron job for scraping every hour
 cron.schedule('0 * * * * *', function(){
 
+    var prodUrl = 'http://www.bee-news.net/';
+
     console.log('You will see this message every hour');
-    request.get('api/feed/scrape', function(error, response, body) {
+    request.get(prodUrl + '/api/feed/scrape', function(error, response, body) {
         if (!error && response.statusCode == 200) {
             console.log('ok');
         } else {
